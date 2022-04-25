@@ -6,12 +6,15 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint && prettier --loglevel silent --write ."
   },
   "dependencies": {
+    "axios": "^0.26.1",
     "next": "12.1.5",
+    "prettier": "^2.6.2",
     "react": "18.0.0",
-    "react-dom": "18.0.0"
+    "react-dom": "18.0.0",
+    "sass": "^1.50.1"
   },
   "devDependencies": {
     "@types/node": "17.0.26",
