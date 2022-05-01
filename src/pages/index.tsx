@@ -5,7 +5,7 @@ import Head from "next/head";
 import HomePage from "./Homepage/Homepage";
 
 const URL_PKMN_LIST =
-  "https://pokeapi.co/api/v2/pokemon-species/?offset=151&limit=3";
+  "https://pokeapi.co/api/v2/pokemon-species/?offset=151&limit=6";
 const BASE_URL_PKMN_INFO = "https://pokeapi.co/api/v2/pokemon/";
 
 type CompleteData = {

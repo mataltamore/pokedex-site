@@ -1,2 +1,54 @@
 @import "/styles/customs/mixins";
 @import "/styles/customs/variables";
+
+.cardItems {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.singleItem {
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+
+  border: 10px solid white;
+  box-shadow: 5px 5px 5px 5px rgb(180, 176, 176);
+  border-radius: 10%;
+
+  background: linear-gradient(
+    180deg,
+    rgba(2, 0, 36, 1) 0%,
+    $grass-type 0%,
+    rgba(0, 212, 255, 0) 100%
+  );
+
+  &__id {
+    margin-top: 5px;
+    color: black;
+    opacity: 0.5;
+    font-weight: 800;
+  }
+
+  &__image {
+  }
+
+  &__name {
+    font-weight: 800;
+    text-transform: capitalize;
+  }
+
+  &__types {
+    margin-bottom: 5px;
+    margin-top: 5px;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+
+    font-size: 10px;
+    color: white;
+    border-radius: 10%;
+    padding: 5px;
+  }
+}
