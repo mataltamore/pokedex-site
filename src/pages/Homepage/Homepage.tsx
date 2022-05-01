@@ -1,89 +1,100 @@
 import React, { useEffect, useState } from "react";
+import { GetStaticProps, InferGetStaticPropsType } from "next";
 import Image from "next/image";
+
 import styles from "./Homepage.module.scss";
+import ImageErrorUrl from "../../../public/images/image-not-found.svg";
 
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+const BASE_URL = "https://pokeapi.co/api/v2/pokemon/";
 
-type CompleteData = {
-  id: number;
-  name: string;
-  types: Array<{ name: string }>;
-  sprite: string;
-};
+type PokeAPI = { name: string; url: string };
+type CardProps = { name: string; id: string; imageUrl: string };
 
-interface IProps {
-  name: string;
-  isActive?: boolean;
+enum ColorType {
+  normal = "rgb(168, 168, 120)",
+  fire = "rgb(240, 128, 48)",
+  fighting = "rgb(192, 48, 40)",
+  water = "rgb(104, 144, 240)",
+  flying = "rgb(168, 144, 240)",
+  grass = "rgb(120, 200, 80)",
+  poison = "rgb(160, 64, 160)",
+  electric = "rgb(248, 208, 48)",
+  ground = "rgb(224, 192, 104)",
+  psychic = "rgb(248, 88, 136)",
+  rock = "rgb(184, 160, 56)",
+  ice = "rgb(152, 216, 216)",
+  bug = "rgb(168, 184, 32)",
+  dragon = "rgb(112, 56, 248)",
+  ghost = "rgb(112, 88, 152)",
+  dark = "rgb(112, 88, 72)",
+  steel = "rgb(184, 184, 208)",
+  fairy = "rgb(238, 153, 172)",
 }
 
-const Card = (props: InferGetServerSidePropsType<GetServerSideProps>) => {
-  const { data } = props;
-
-  const typeColor = [
-    { type: "normal", color: "rgb(168, 168, 120)" },
-    { type: "fire", color: "rgb(240, 128, 48)" },
-    { type: "fighting", color: "rgb(192, 48, 40)" },
-    { type: "water", color: "rgb(104, 144, 240)" },
-    { type: "flying", color: "rgb(168, 144, 240)" },
-    { type: "grass", color: "rgb(120, 200, 80)" },
-    { type: "poison", color: "rgb(160, 64, 160)" },
-    { type: "electric", color: "rgb(248, 208, 48)" },
-    { type: "ground", color: "rgb(224, 192, 104)" },
-    { type: "psychic", color: "rgb(248, 88, 136)" },
-    { type: "rock", color: "rgb(184, 160, 56)" },
-    { type: "ice", color: "rgb(152, 216, 216)" },
-    { type: "bug", color: "rgb(168, 184, 32)" },
-    { type: "dragon", color: "rgb(112, 56, 248)" },
-    { type: "ghost", color: "rgb(112, 88, 152)" },
-    { type: "dark", color: "rgb(112, 88, 72)" },
-    { type: "steel", color: "rgb(184, 184, 208)" },
-    { type: "fairy", color: "rgb(238, 153, 172)" },
-  ];
+const Card = (props: CardProps) => {
+  const { name, id, imageUrl } = props;
 
   return (
-    <>
-      <div className={styles.cardItems}>
-        {data.map((pkm: CompleteData) => {
-          return (
-            <div className={styles.singleItem}>
-              <div className={styles.singleItem__id}>#{pkm.id}</div>
-              <div className={styles.singleItem__image}>
-                <Image src={pkm.sprite} height={200} width={200} />
-              </div>
-              <div className={styles.singleItem__name}>{pkm.name}</div>
-              <div>
-                {pkm.types.map((type) => (
-                  <div
-                    style={{
-                      backgroundColor: typeColor.map((col) =>
-                        type.name === col.type ? col.color : "none"
-                      ),
-                    }}
-                    className={styles.singleItem__types}
-                  >
-                    {type.name}
-                  </div>
-                ))}
-              </div>
-            </div>
-          );
-        })}
+    <div className={styles.singleItem}>
+      <div className={styles.singleItem__id}>#{id}</div>
+      <div className={styles.singleItem__image}>
+        <Image
+          src={parseInt(id) < 808 ? imageUrl : ImageErrorUrl}
+          alt={name}
+          loading="lazy"
+          layout="fill"
+        />
       </div>
-    </>
+      <div className={styles.singleItem__name}>{name}</div>
+    </div>
   );
 };
 
-const Homepage: React.FC<IProps> = ({
-  data,
-}: InferGetServerSidePropsType<GetServerSideProps>) => {
+const Homepage = ({ data }: InferGetStaticPropsType<GetStaticProps>) => {
+  const [pokemons, setPokemons] = useState<Array<PokeAPI>>([]);
+  let pokemonId: string, paddedPokemonId: string, imageUrl: string;
+
+  useEffect(() => {
+    if (data) setPokemons(() => [...data.results]);
+  }, [data]);
+
+  function extractIdFromUrl(url: string) {
+    pokemonId = url.split("/")[6];
+    paddedPokemonId = pokemonId.padStart(3, "0");
+
+    return [pokemonId, paddedPokemonId];
+  }
+
+  function getImageById(id: string, compressed: boolean = false) {
+    return compressed
+      ? `https://raw.githubusercontent.com/HybridShivam/Pokemon/master/assets/thumbnails-compressed/${id}.png`
+      : `https://raw.githubusercontent.com/HybridShivam/Pokemon/master/assets/images/${id}.png`;
+  }
+
   return (
-    <div>
+    <>
       <div>logo</div>
       <div>search bar</div>
-      <div>pokemon grid</div>
-      <div></div>
-      <Card data={data} />
-    </div>
+      <div className={styles.cardItems}>
+        {pokemons.length === 0 ? (
+          <div>Data not found</div>
+        ) : (
+          pokemons.map((pokemon: PokeAPI) => {
+            [pokemonId, paddedPokemonId] = extractIdFromUrl(pokemon.url);
+            imageUrl = getImageById(paddedPokemonId, true);
+
+            return (
+              <Card
+                key={pokemonId}
+                name={pokemon.name}
+                id={pokemonId}
+                imageUrl={imageUrl}
+              />
+            );
+          })
+        )}
+      </div>
+    </>
   );
 };
 
