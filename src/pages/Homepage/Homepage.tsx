@@ -3,7 +3,7 @@ import { GetStaticProps, InferGetStaticPropsType } from "next";
 import Image from "next/image";
 
 import styles from "./Homepage.module.scss";
-import ImageError from "../../../public/images/image-not-found.svg";
+import ImageErrorUrl from "../../../public/images/image-not-found.svg";
 
 type PokeAPI = { name: string; url: string };
 const BASE_URL = "https://pokeapi.co/api/v2/pokemon/";
@@ -13,7 +13,7 @@ const Homepage = ({ data }: InferGetStaticPropsType<GetStaticProps>) => {
   let pokemonId: string, paddedPokemonId: string, imageUrl: string;
 
   useEffect(() => {
-    if (data) setPokemons((prevPokemons) => [...prevPokemons, ...data.results]);
+    if (data) setPokemons(() => [...data.results]);
   }, [data]);
 
   return (
@@ -30,7 +30,7 @@ const Homepage = ({ data }: InferGetStaticPropsType<GetStaticProps>) => {
             <div key={pokemonId}>
               {pokemon.name}
               <Image
-                src={imageUrl}
+                src={parseInt(pokemonId) < 808 ? imageUrl : ImageErrorUrl}
                 alt={pokemon.name}
                 loading="lazy"
                 width={100}
