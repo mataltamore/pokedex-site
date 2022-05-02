@@ -88,7 +88,6 @@ const Homepage = ({ data }: InferGetStaticPropsType<GetStaticProps>) => {
         <div className={styles.searchBar__container}>
           <input
             type="text"
-            name="pokemonSearch"
             className={styles.searchBar__container__input}
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
