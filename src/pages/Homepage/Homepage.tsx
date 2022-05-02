@@ -11,6 +11,10 @@ const BASE_URL = "https://pokeapi.co/api/v2/pokemon/";
 
 type PokeAPI = { name: string; url: string };
 type CardProps = { name: string; id: string; imageUrl: string };
+type SearchBarProps = {
+  data: Array<PokeAPI>;
+  setPokemons: React.Dispatch<React.SetStateAction<PokeAPI[]>>;
+};
 
 enum ColorType {
   normal = "rgb(168, 168, 120)",
@@ -33,9 +37,43 @@ enum ColorType {
   fairy = "rgb(238, 153, 172)",
 }
 
+const Header = () => {
+  return (
+    <div className={styles.pokedexTitle}>
+      <div className={styles.pokedexTitle__image}>
+        <Image src={imagePokeball} alt="pokeball-image" loading="lazy" />
+      </div>
+      <div>Pokédex</div>
+    </div>
+  );
+};
+
+const SearchBar = (props: SearchBarProps) => {
+  const { data, setPokemons } = props;
+  return (
+    <div className={styles.searchBar}>
+      <div className={styles.searchBar__container}>
+        <input
+          type="text"
+          className={styles.searchBar__container__input}
+          onChange={(e) => {
+            setPokemons(
+              data.filter((pokemon: PokeAPI) =>
+                pokemon.name.includes(e.target.value)
+              )
+            );
+          }}
+        />
+        <div className={styles.searchBar__container__image}>
+          <Image src={imageSearch} alt="search-image" loading="lazy" />
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const Card = (props: CardProps) => {
   const { name, id, imageUrl } = props;
-
   return (
     <div className={styles.singleItem}>
       <div className={styles.singleItem__id}>#{id}</div>
@@ -52,15 +90,10 @@ const Card = (props: CardProps) => {
   );
 };
 
-const Homepage = ({ data }: InferGetStaticPropsType<GetStaticProps>) => {
-  const [searchText, setSearchText] = useState("");
-  const [pokemons, setPokemons] = useState<Array<PokeAPI>>([]);
+const GridCards = (props: { pokemons: Array<PokeAPI> }) => {
+  const { pokemons } = props;
+
   let pokemonId: string, paddedPokemonId: string, imageUrl: string;
-
-  useEffect(() => {
-    if (data) setPokemons(() => [...data.results]);
-  }, [data]);
-
   function extractIdFromUrl(url: string) {
     pokemonId = url.split("/")[6];
     paddedPokemonId = pokemonId.padStart(3, "0");
@@ -73,51 +106,41 @@ const Homepage = ({ data }: InferGetStaticPropsType<GetStaticProps>) => {
       ? `https://raw.githubusercontent.com/HybridShivam/Pokemon/master/assets/thumbnails-compressed/${id}.png`
       : `https://raw.githubusercontent.com/HybridShivam/Pokemon/master/assets/images/${id}.png`;
   }
+  return (
+    <div className={styles.cardItems}>
+      {pokemons.length === 0 ? (
+        <div>Data not found</div>
+      ) : (
+        pokemons.map((pokemon: PokeAPI) => {
+          [pokemonId, paddedPokemonId] = extractIdFromUrl(pokemon.url);
+          imageUrl = getImageById(paddedPokemonId, true);
+
+          return (
+            <Card
+              key={pokemonId}
+              name={pokemon.name}
+              id={pokemonId}
+              imageUrl={imageUrl}
+            />
+          );
+        })
+      )}
+    </div>
+  );
+};
+
+const Homepage = ({ data }: InferGetStaticPropsType<GetStaticProps>) => {
+  const [pokemons, setPokemons] = useState<Array<PokeAPI>>([]);
+
+  useEffect(() => {
+    if (data) setPokemons(() => [...data.results]);
+  }, [data]);
 
   return (
     <>
-      <div>
-        <div className={styles.pokedexTitle}>
-          <div className={styles.pokedexTitle__image}>
-            <Image src={imagePokeball} alt="pokeball-image" loading="lazy" />
-          </div>
-          <div>Pokédex</div>
-        </div>
-      </div>
-      <div className={styles.searchBar}>
-        <div className={styles.searchBar__container}>
-          <input
-            type="text"
-            className={styles.searchBar__container__input}
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
-          />
-          <div className={styles.searchBar__container__image}>
-            <Image src={imageSearch} alt="search-image" loading="lazy" />
-          </div>
-        </div>
-      </div>
-      <div className={styles.cardItems}>
-        {pokemons.length === 0 ? (
-          <div>Data not found</div>
-        ) : (
-          pokemons.map((pokemon: PokeAPI) => {
-            [pokemonId, paddedPokemonId] = extractIdFromUrl(pokemon.url);
-            imageUrl = getImageById(paddedPokemonId, true);
-
-            if (pokemon.name.includes(searchText)) {
-              return (
-                <Card
-                  key={pokemonId}
-                  name={pokemon.name}
-                  id={pokemonId}
-                  imageUrl={imageUrl}
-                />
-              );
-            }
-          })
-        )}
-      </div>
+      <Header />
+      <SearchBar data={data.results} setPokemons={setPokemons} />
+      <GridCards pokemons={pokemons} />
     </>
   );
 };
