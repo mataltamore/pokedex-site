@@ -4,6 +4,8 @@ import Image from "next/image";
 
 import styles from "./Homepage.module.scss";
 import ImageErrorUrl from "../../../public/images/image-not-found.svg";
+import imagePokeball from "../../../public/images/pokeball.png";
+import imageSearch from "../../../public/images/searchimg.svg";
 
 const BASE_URL = "https://pokeapi.co/api/v2/pokemon/";
 
@@ -51,6 +53,7 @@ const Card = (props: CardProps) => {
 };
 
 const Homepage = ({ data }: InferGetStaticPropsType<GetStaticProps>) => {
+  const [searchText, setSearchText] = useState("");
   const [pokemons, setPokemons] = useState<Array<PokeAPI>>([]);
   let pokemonId: string, paddedPokemonId: string, imageUrl: string;
 
@@ -73,8 +76,28 @@ const Homepage = ({ data }: InferGetStaticPropsType<GetStaticProps>) => {
 
   return (
     <>
-      <div>logo</div>
-      <div>search bar</div>
+      <div>
+        <div className={styles.pokedexTitle}>
+          <div className={styles.pokedexTitle__image}>
+            <Image src={imagePokeball} alt="pokeball-image" loading="lazy" />
+          </div>
+          <div>Pokédex</div>
+        </div>
+      </div>
+      <div className={styles.searchBar}>
+        <div className={styles.searchBar__container}>
+          <input
+            type="text"
+            name="pokemonSearch"
+            className={styles.searchBar__container__input}
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+          />
+          <div className={styles.searchBar__container__image}>
+            <Image src={imageSearch} alt="search-image" loading="lazy" />
+          </div>
+        </div>
+      </div>
       <div className={styles.cardItems}>
         {pokemons.length === 0 ? (
           <div>Data not found</div>
@@ -83,14 +106,16 @@ const Homepage = ({ data }: InferGetStaticPropsType<GetStaticProps>) => {
             [pokemonId, paddedPokemonId] = extractIdFromUrl(pokemon.url);
             imageUrl = getImageById(paddedPokemonId, true);
 
-            return (
-              <Card
-                key={pokemonId}
-                name={pokemon.name}
-                id={pokemonId}
-                imageUrl={imageUrl}
-              />
-            );
+            if (pokemon.name.includes(searchText)) {
+              return (
+                <Card
+                  key={pokemonId}
+                  name={pokemon.name}
+                  id={pokemonId}
+                  imageUrl={imageUrl}
+                />
+              );
+            }
           })
         )}
       </div>
