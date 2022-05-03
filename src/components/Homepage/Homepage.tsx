@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 import Image from "next/image";
+import Link from "next/link";
 
 import styles from "./Homepage.module.scss";
 import ImageErrorUrl from "../../../public/images/image-not-found.svg";
@@ -74,19 +75,22 @@ const SearchBar = (props: SearchBarProps) => {
 
 const Card = (props: CardProps) => {
   const { name, id, imageUrl } = props;
+
   return (
-    <div className={styles.singleItem}>
-      <div className={styles.singleItem__id}>#{id}</div>
-      <div className={styles.singleItem__image}>
-        <Image
-          src={parseInt(id) < 808 ? imageUrl : ImageErrorUrl}
-          alt={name}
-          loading="lazy"
-          layout="fill"
-        />
+    <Link href={`/pokemon/${name}?id=${id}`} passHref>
+      <div className={styles.singleItem}>
+        <div className={styles.singleItem__id}>#{id}</div>
+        <div className={styles.singleItem__image}>
+          <Image
+            src={parseInt(id) < 808 ? imageUrl : ImageErrorUrl}
+            alt={name}
+            loading="lazy"
+            layout="fill"
+          />
+        </div>
+        <div className={styles.singleItem__name}>{name}</div>
       </div>
-      <div className={styles.singleItem__name}>{name}</div>
-    </div>
+    </Link>
   );
 };
 

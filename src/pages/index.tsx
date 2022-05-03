@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 import Head from "next/head";
 import PokemonSpeciesAPI from "../../public/api/pokemon-species.json";
-import HomePage from "./Homepage/Homepage";
+import HomePage from "../components/Homepage/Homepage";
 
 export const getStaticProps: GetStaticProps = async () => {
   return {
