@@ -191,6 +191,12 @@
       color: white;
       font-weight: 600;
     }
+
+    &__image {
+      position: relative;
+      width: 150px;
+      height: 150px;
+    }
   }
 
   &__title {

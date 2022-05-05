@@ -10,37 +10,43 @@ export type SearchBarProps = {
 // DetailPage Props
 
 export type DataPropsType = {
-  data: {
-    abilities: AbilitiesType[];
-    forms: FormsType[];
-    game_indices: GameIndicesType[];
-    height: number;
-    id: number;
-    location_area_encounters: string;
-    name: string;
-    past_types: PastTypes[];
-    species: SpeciesType;
-    sprites: SpritesType;
-    stats: StatTypes[];
-    types: TypesType[];
-    weight: number;
-    chain: ChainType;
-    base_happiness: number;
-    capture_rate: number;
-    color: ColorGroupType;
-    egg_groups: EggGroupsType[];
-    gender_rate: number;
-    generation: GenerationType[];
-    habitat: HabitatType;
-    has_gender_differences: boolean;
-    hatch_counter: 20;
-    is_baby: boolean;
-    is_legendary: boolean;
-    is_mythical: boolean;
-    pokedex_numbers: PokedexNumbersType[];
-    shape: ShapeType;
-  };
-  detail: any;
+  data: DataType;
+  detail: DetailType;
+};
+
+export type DataType = {
+  abilities: AbilitiesType[];
+  forms: FormsType[];
+  game_indices: GameIndicesType[];
+  height: number;
+  id: number;
+  location_area_encounters: string;
+  name: string;
+  past_types: PastTypes[];
+  species: SpeciesType;
+  sprites: SpritesType;
+  stats: StatTypes[];
+  types: TypesType[];
+  weight: number;
+};
+
+export type DetailType = {
+  chain: ChainType;
+  base_happiness: number;
+  capture_rate: number;
+  color: ColorGroupType;
+  egg_groups: EggGroupsType[];
+  flavor_text_entries: FlavorTextEntryType[];
+  gender_rate: number;
+  generation: GenerationType;
+  habitat: HabitatType;
+  has_gender_differences: boolean;
+  hatch_counter: 20;
+  is_baby: boolean;
+  is_legendary: boolean;
+  is_mythical: boolean;
+  pokedex_numbers: PokedexNumbersType[];
+  shape: ShapeType;
 };
 
 export type AbilitiesType = {
@@ -170,6 +176,16 @@ export type ColorGroupType = {
 
 export type EggGroupsType = {
   name: string;
+};
+
+export type FlavorTextEntryType = {
+  flavor_text: string;
+  language: {
+    name: string;
+  };
+  version: {
+    name: string;
+  };
 };
 
 export type GenerationType = {

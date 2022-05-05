@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { NextPage } from "next/types";
 import Image from "next/image";
 
-import ImageErrorUrl from "../../../public/images/image-not-found.svg";
+import pokeball from "../../../public/images/pokeball.svg";
 import styles from "./DetailPage.module.scss";
 
 import {
@@ -31,7 +31,7 @@ import rockIcon from "../../../public/images/rock.svg";
 import steelIcon from "../../../public/images/steel.svg";
 import waterIcon from "../../../public/images/water.svg";
 
-const IconType = {
+const IconMapping = {
   normal: normalIcon,
   fire: fireIcon,
   fighting: fightingIcon,
@@ -70,24 +70,22 @@ const TypeVarBox = (props: { types: Array<TypesType> }) => {
     <div className={styles.typeVarBox}>
       {types.map((type: TypesType) => {
         return (
-          <>
-            <span
-              key={type.type.name}
-              className={styles.typeVarBox__each}
-              style={{
-                backgroundColor: ColorType[type.type.name],
-              }}
-            >
-              <Image
-                src={IconType[type.type.name]}
-                alt="icon-type"
-                loading="lazy"
-                width="10px"
-                height="10px"
-              />
-              {" " + type.type.name}
-            </span>
-          </>
+          <span
+            key={type.type.name}
+            className={styles.typeVarBox__each}
+            style={{
+              backgroundColor: ColorType[type.type.name],
+            }}
+          >
+            <Image
+              src={IconMapping[type.type.name]}
+              alt="icon-type"
+              loading="lazy"
+              width="10"
+              height="10"
+            />
+            {" " + type.type.name}
+          </span>
         );
       })}
     </div>
@@ -155,7 +153,7 @@ const BaseInfo = (props: {
       <div className={styles.baseInfo__description}>
         <div className={styles.baseInfo__description__image}>
           <Image
-            src={id < 808 ? sprite : ImageErrorUrl}
+            src={id < 808 ? sprite : pokeball}
             alt="official-artwork"
             loading="lazy"
             width="300px"
@@ -184,14 +182,8 @@ const EvolutionCard = (props: {
   const { color, name, image } = props;
   return (
     <div className={styles.evolutions__card}>
-      <div>
-        <Image
-          src={image}
-          alt="search-image"
-          loading="lazy"
-          width="150px"
-          height="150px"
-        />
+      <div className={styles.evolutions__card__image}>
+        <Image src={image} alt="search-image" loading="lazy" layout="fill" />
       </div>
       <div
         className={styles.evolutions__card__name}
@@ -242,12 +234,10 @@ const SpecieString = (props: {
 
 const Footer = (props: {
   color: ColorType;
-  topPage: boolean;
-  setTopPage: React.Dispatch<React.SetStateAction<boolean>>;
-  gamesNames: Array<{ id: string; name: string; entryNum: number }>;
+  gamesName: Array<{ id: string; name: string; entryNum: number }>;
   setGameNumb: React.Dispatch<React.SetStateAction<number>>;
 }) => {
-  const { color, topPage, setTopPage, gamesNames, setGameNumb } = props;
+  const { color, gamesName, setGameNumb } = props;
 
   const [game, setGame] = useState("Pokemon Shield");
   const [showMenu, setShowMenu] = useState(false);
@@ -265,7 +255,7 @@ const Footer = (props: {
         <button
           className={styles.footer__btns__topBtn}
           style={{ backgroundColor: color }}
-          onClick={() => setTopPage(!topPage)}
+          onClick={() => typeof window !== "undefined" && window.scrollTo(0, 0)}
         >
           Top btn
         </button>
@@ -280,7 +270,7 @@ const Footer = (props: {
             className={styles.footer__changeGame__list}
             style={{ backgroundColor: color }}
           >
-            {gamesNames.map((gameName) => {
+            {gamesName.map((gameName) => {
               return (
                 <li
                   key={gameName.id}
@@ -310,24 +300,21 @@ const GameMenu = (props: {
   const { game, showMenu, setShowMenu, children } = props;
 
   return (
-    <>
-      <div onClick={() => setShowMenu(!showMenu)}>
-        Select Game: {game}
-        {showMenu && <>{children}</>}
-      </div>
-    </>
+    <div onClick={() => setShowMenu(!showMenu)}>
+      Select Game: {game}
+      {showMenu && children}
+    </div>
   );
 };
 
 const DetailPage: NextPage<DataPropsType> = (props) => {
   const { data, detail } = props;
 
-  const [topPage, setTopPage] = useState(false);
   const [gameNumb, setGameNumb] = useState(91);
 
   const color = ColorType[data.types[0].type.name];
 
-  const gamesNames = [
+  const gamesName = [
     {
       id: "red",
       name: "Pokemon Red",
@@ -470,13 +457,6 @@ const DetailPage: NextPage<DataPropsType> = (props) => {
     },
   ];
 
-  useEffect(() => {
-    if (topPage) {
-      window.scrollTo(0, 0);
-      setTopPage(!topPage);
-    }
-  }, [topPage]);
-
   return (
     <div>
       <NavBar color={color} name={data.name} id={data.id} />
@@ -534,7 +514,9 @@ const DetailPage: NextPage<DataPropsType> = (props) => {
             color={color}
             name="Habitat"
             info="The habitat this species can be encountered in a game."
-            value1={detail.habitat === "null" ? detail.habitat.name : "unknown"}
+            value1={
+              detail.habitat.name === "null" ? detail.habitat.name : "unknown"
+            }
             value2={""}
           />
           <SpecieString
@@ -560,13 +542,7 @@ const DetailPage: NextPage<DataPropsType> = (props) => {
         </div>
       </div>
 
-      <Footer
-        color={color}
-        topPage={topPage}
-        setTopPage={setTopPage}
-        gamesNames={gamesNames}
-        setGameNumb={setGameNumb}
-      />
+      <Footer color={color} gamesName={gamesName} setGameNumb={setGameNumb} />
     </div>
   );
 };
