@@ -74,8 +74,10 @@ const BaseInfo = (props: {
   height: number;
   id: number;
   sprite: string;
+  description: string;
 }) => {
-  const { color, types, abilities, weight, height, id, sprite } = props;
+  const { color, types, abilities, weight, height, id, sprite, description } =
+    props;
   return (
     <div className={styles.baseInfo}>
       <div className={styles.baseInfo__grid}>
@@ -111,7 +113,14 @@ const BaseInfo = (props: {
           />
         </div>
 
-        <div>Desctiption</div>
+        <div className={styles.baseInfo__description__container}>
+          <div className={styles.baseInfo__description__container__title}>
+            Description
+          </div>
+          <div className={styles.baseInfo__description__container__text}>
+            {description}
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -192,10 +201,14 @@ const Footer = (props: {
   color: ColorType;
   topPage: boolean;
   setTopPage: React.Dispatch<React.SetStateAction<boolean>>;
+  gamesNames: Array<{ id: string; name: string; entryNum: number }>;
+  gameNumb: number;
+  setGameNumb: React.Dispatch<React.SetStateAction<number>>;
 }) => {
-  const { color, topPage, setTopPage } = props;
+  const { color, topPage, setTopPage, gamesNames, gameNumb, setGameNumb } =
+    props;
 
-  const [game, setGame] = useState("game_default");
+  const [game, setGame] = useState("Pokemon Shield");
   const [showMenu, setShowMenu] = useState(false);
 
   return (
@@ -226,16 +239,19 @@ const Footer = (props: {
             className={styles.footer__changeGame__list}
             style={{ backgroundColor: color }}
           >
-            <li
-              onClick={() => {
-                setGame("game1");
-                setShowMenu(!showMenu);
-              }}
-            >
-              game1
-            </li>
-            <li onClick={() => setGame("game2")}>game2</li>
-            <li onClick={() => setGame("game_default")}>game2</li>
+            {gamesNames.map((gameName) => {
+              return (
+                <li
+                  onClick={() => {
+                    setGame(gameName.name);
+                    setShowMenu(!showMenu);
+                    setGameNumb(gameName.entryNum);
+                  }}
+                >
+                  {gameName.name}
+                </li>
+              );
+            })}
           </ul>
         </GameMenu>
       </div>
@@ -265,10 +281,152 @@ const DetailPage: NextPage<DataPropsType> = (props) => {
   const { data, detail } = props;
 
   const [topPage, setTopPage] = useState(false);
+  const [gameNumb, setGameNumb] = useState(91);
 
   const color = ColorType[data.types[0].type.name];
 
-  console.log(detail.flavor_text_entries);
+  const gamesNames = [
+    {
+      id: "red",
+      name: "Pokemon Red",
+      entryNum: 0,
+    },
+    {
+      id: "blue",
+      name: "Pokemon Blue",
+      entryNum: 1,
+    },
+    {
+      id: "yellow",
+      name: "Pokemon Yellow",
+      entryNum: 2,
+    },
+    {
+      id: "gold",
+      name: "Pokemon Gold",
+      entryNum: 3,
+    },
+    {
+      id: "silver",
+      name: "Pokemon Silver",
+      entryNum: 4,
+    },
+    {
+      id: "crystal",
+      name: "Pokemon Crystal",
+      entryNum: 5,
+    },
+    {
+      id: "ruby",
+      name: "Pokemon Ruby",
+      entryNum: 6,
+    },
+    {
+      id: "sapphire",
+      name: "Pokemon Sapphire",
+      entryNum: 7,
+    },
+    {
+      id: "emerald",
+      name: "Pokemon Emerald",
+      entryNum: 8,
+    },
+    {
+      id: "firered",
+      name: "Pokemon Fire Red",
+      entryNum: 9,
+    },
+    {
+      id: "leafgreen",
+      name: "Pokemon Leaf Green",
+      entryNum: 10,
+    },
+    {
+      id: "diamond",
+      name: "Pokemon Diamond",
+      entryNum: 11,
+    },
+    {
+      id: "pearl",
+      name: "Pokemon Pearl",
+      entryNum: 12,
+    },
+    {
+      id: "platinum",
+      name: "Pokemon Platinum",
+      entryNum: 13,
+    },
+    {
+      id: "heartgold",
+      name: "Pokemon Heart Gold",
+      entryNum: 14,
+    },
+    {
+      id: "soulsilver",
+      name: "Pokemon SoulSilver",
+      entryNum: 15,
+    },
+    {
+      id: "black",
+      name: "Pokemon Black",
+      entryNum: 17,
+    },
+    {
+      id: "white",
+      name: "Pokemon White",
+      entryNum: 19,
+    },
+    {
+      id: "black-2",
+      name: "Pokemon Black 2",
+      entryNum: 20,
+    },
+    {
+      id: "white-2",
+      name: "Pokemon White 2",
+      entryNum: 21,
+    },
+    {
+      id: "x",
+      name: "Pokemon X",
+      entryNum: 28,
+    },
+    {
+      id: "y",
+      name: "Pokemon Y",
+      entryNum: 36,
+    },
+    {
+      id: "omega-ruby",
+      name: "Pokemon Omega Ruby",
+      entryNum: 44,
+    },
+    {
+      id: "alpha-sapphire",
+      name: "Pokemon Alpha Sapphire",
+      entryNum: 52,
+    },
+    {
+      id: "lets-go-pikachu",
+      name: "Pokemon Let's Go Pikachu",
+      entryNum: 61,
+    },
+    {
+      id: "lets-go-eevee",
+      name: "Pokemon Let's Go Eevee",
+      entryNum: 71,
+    },
+    {
+      id: "sword",
+      name: "Pokemon Sword",
+      entryNum: 81,
+    },
+    {
+      id: "shield",
+      name: "Pokemon Shield",
+      entryNum: 91,
+    },
+  ];
 
   useEffect(() => {
     if (topPage) {
@@ -288,6 +446,7 @@ const DetailPage: NextPage<DataPropsType> = (props) => {
         height={data.height}
         id={data.id}
         sprite={data.sprites.other["official-artwork"].front_default}
+        description={detail.flavor_text_entries[gameNumb].flavor_text}
       />
 
       <div className={styles.evolutions}>
@@ -305,8 +464,7 @@ const DetailPage: NextPage<DataPropsType> = (props) => {
 
       <div>
         <div className={styles.specieTitle} style={{ color: color }}>
-          {" "}
-          Species Data{" "}
+          Species Data
         </div>
         <div className={styles.specie}>
           <SpecieNumber
@@ -325,7 +483,14 @@ const DetailPage: NextPage<DataPropsType> = (props) => {
         </div>
       </div>
 
-      <Footer color={color} topPage={topPage} setTopPage={setTopPage} />
+      <Footer
+        color={color}
+        topPage={topPage}
+        setTopPage={setTopPage}
+        gamesNames={gamesNames}
+        gameNumb={gameNumb}
+        setGameNumb={setGameNumb}
+      />
     </div>
   );
 };
