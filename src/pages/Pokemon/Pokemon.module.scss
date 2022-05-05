@@ -45,7 +45,7 @@
 
   &__grid {
     @include flex($direction: column, $justify: center);
-    gap: 20px;
+    gap: 5px;
 
     &__column {
       @include flex();
@@ -79,6 +79,8 @@
   @include flex($direction: column);
   gap: 10px;
 
+  margin: 5px;
+
   font-weight: 800;
   color: $smoother-black;
 }
@@ -86,6 +88,8 @@
 .typeVarBox {
   @include flex();
   gap: 10px;
+
+  margin: 5px;
 
   &__each {
     font-weight: 800;
@@ -106,6 +110,8 @@
 .abilityVarBox {
   @include flex();
   gap: 10px;
+
+  margin: 5px;
 
   &__each {
     font-weight: 800;
@@ -146,7 +152,7 @@
   margin: 30px;
 
   &__card {
-    @include flex($direction: column, $align: center);
+    @include flex($direction: column, $align: center, $justify: center);
     gap: 5px;
 
     border: none;
@@ -173,7 +179,7 @@
     }
   }
 
-  &__text {
+  &__title {
     text-align: center;
     font-size: 35px;
     font-weight: 800;
@@ -182,12 +188,30 @@
   }
 }
 
+.specieTitle {
+  text-align: center;
+  font-size: 35px;
+  font-weight: 800;
+
+  text-shadow: 0.125rem 0.125rem 0.2rem $shadow-pkm;
+}
+
 .specie {
-  @include flex($direction: column, $align: center, $wrap: flex-wrap);
+  @include flex(
+    $direction: column,
+    $align: center,
+    $justify: center,
+    $wrap: flex-wrap
+  );
   gap: 10px;
 
   @include media(tablet) {
-    @include flex($direction: row, $align: center, $wrap: flex-wrap);
+    @include flex(
+      $direction: row,
+      $align: center,
+      $justify: center,
+      $wrap: flex-wrap
+    );
   }
 
   &__card {

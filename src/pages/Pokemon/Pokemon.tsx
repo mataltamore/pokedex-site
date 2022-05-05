@@ -476,28 +476,39 @@ const Pokemon: NextPage<DataPropsType> = (props) => {
         sprite={data.sprites.other["official-artwork"].front_default}
       />
 
-      <div className={styles.evolutions__text} style={{ color: color }}>
-        Evolution Chain
+      <div className={styles.evolutions}>
+        <div className={styles.evolutions__title} style={{ color: color }}>
+          Evolution Chain
+        </div>
+        <div>
+          <EvolutionCard
+            color={color}
+            name={data.name}
+            image={data.sprites.other["official-artwork"].front_default}
+          />
+        </div>
       </div>
-      <EvolutionCard
-        color={color}
-        name={data.name}
-        image={data.sprites.other["official-artwork"].front_default}
-      />
 
-      <div className={styles.specie}>
-        <SpecieNumber
-          color={color}
-          name="Base Happiness"
-          info="The happiness when caught by a normal Pokéball; up to 255."
-          value={data.base_happiness}
-        />
-        <SpecieNumber
-          color={color}
-          name="Capture Rate"
-          info="The higher the number, the easier the catch (upto 255)."
-          value={data.capture_rate}
-        />
+      <div>
+        <div className={styles.specieTitle} style={{ color: color }}>
+          {" "}
+          Species Data{" "}
+        </div>
+        <div className={styles.specie}>
+          <SpecieNumber
+            color={color}
+            name="Base Happiness"
+            info="The happiness when caught by a normal Pokéball; up to 255."
+            value={data.base_happiness}
+          />
+
+          <SpecieNumber
+            color={color}
+            name="Capture Rate"
+            info="The higher the number, the easier the catch (upto 255)."
+            value={data.capture_rate}
+          />
+        </div>
       </div>
 
       <Footer color={color} topPage={topPage} setTopPage={setTopPage} />
