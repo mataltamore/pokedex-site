@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { NextPage } from "next/types";
 import Image from "next/image";
 
@@ -11,6 +11,8 @@ import {
   AbilitiesType,
   DataPropsType,
 } from "../../helpers/types";
+
+import gamesName from "../../../public/api/games-name.json";
 
 import normalIcon from "../../../public/images/normal.svg";
 import bugIcon from "../../../public/images/bug.svg";
@@ -314,149 +316,6 @@ const DetailPage: NextPage<DataPropsType> = (props) => {
 
   const color = ColorType[data.types[0].type.name];
 
-  const gamesName = [
-    {
-      id: "red",
-      name: "Pokemon Red",
-      entryNum: 0,
-    },
-    {
-      id: "blue",
-      name: "Pokemon Blue",
-      entryNum: 1,
-    },
-    {
-      id: "yellow",
-      name: "Pokemon Yellow",
-      entryNum: 2,
-    },
-    {
-      id: "gold",
-      name: "Pokemon Gold",
-      entryNum: 3,
-    },
-    {
-      id: "silver",
-      name: "Pokemon Silver",
-      entryNum: 4,
-    },
-    {
-      id: "crystal",
-      name: "Pokemon Crystal",
-      entryNum: 5,
-    },
-    {
-      id: "ruby",
-      name: "Pokemon Ruby",
-      entryNum: 6,
-    },
-    {
-      id: "sapphire",
-      name: "Pokemon Sapphire",
-      entryNum: 7,
-    },
-    {
-      id: "emerald",
-      name: "Pokemon Emerald",
-      entryNum: 8,
-    },
-    {
-      id: "firered",
-      name: "Pokemon Fire Red",
-      entryNum: 9,
-    },
-    {
-      id: "leafgreen",
-      name: "Pokemon Leaf Green",
-      entryNum: 10,
-    },
-    {
-      id: "diamond",
-      name: "Pokemon Diamond",
-      entryNum: 11,
-    },
-    {
-      id: "pearl",
-      name: "Pokemon Pearl",
-      entryNum: 12,
-    },
-    {
-      id: "platinum",
-      name: "Pokemon Platinum",
-      entryNum: 13,
-    },
-    {
-      id: "heartgold",
-      name: "Pokemon Heart Gold",
-      entryNum: 14,
-    },
-    {
-      id: "soulsilver",
-      name: "Pokemon SoulSilver",
-      entryNum: 15,
-    },
-    {
-      id: "black",
-      name: "Pokemon Black",
-      entryNum: 17,
-    },
-    {
-      id: "white",
-      name: "Pokemon White",
-      entryNum: 19,
-    },
-    {
-      id: "black-2",
-      name: "Pokemon Black 2",
-      entryNum: 20,
-    },
-    {
-      id: "white-2",
-      name: "Pokemon White 2",
-      entryNum: 21,
-    },
-    {
-      id: "x",
-      name: "Pokemon X",
-      entryNum: 28,
-    },
-    {
-      id: "y",
-      name: "Pokemon Y",
-      entryNum: 36,
-    },
-    {
-      id: "omega-ruby",
-      name: "Pokemon Omega Ruby",
-      entryNum: 44,
-    },
-    {
-      id: "alpha-sapphire",
-      name: "Pokemon Alpha Sapphire",
-      entryNum: 52,
-    },
-    {
-      id: "lets-go-pikachu",
-      name: "Pokemon Let's Go Pikachu",
-      entryNum: 61,
-    },
-    {
-      id: "lets-go-eevee",
-      name: "Pokemon Let's Go Eevee",
-      entryNum: 71,
-    },
-    {
-      id: "sword",
-      name: "Pokemon Sword",
-      entryNum: 81,
-    },
-    {
-      id: "shield",
-      name: "Pokemon Shield",
-      entryNum: 91,
-    },
-  ];
-
   return (
     <div>
       <NavBar color={color} name={data.name} id={data.id} />
@@ -542,7 +401,11 @@ const DetailPage: NextPage<DataPropsType> = (props) => {
         </div>
       </div>
 
-      <Footer color={color} gamesName={gamesName} setGameNumb={setGameNumb} />
+      <Footer
+        color={color}
+        gamesName={gamesName.games}
+        setGameNumb={setGameNumb}
+      />
     </div>
   );
 };

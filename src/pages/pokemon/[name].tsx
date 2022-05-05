@@ -1,9 +1,7 @@
 import React from "react";
-import { useEffect, useState } from "react";
 
-import type { NextPage } from "next";
+import { NextPage } from "next/types";
 import Head from "next/head";
-import { useRouter } from "next/router";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 
 import DetailPage from "../../components/DetailPage/DetailPage";
