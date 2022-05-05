@@ -12,8 +12,49 @@ import {
   DataPropsType,
 } from "../../helpers/types";
 
+import normalIcon from "../../../public/images/normal.svg";
+import bugIcon from "../../../public/images/bug.svg";
+import darkIcon from "../../../public/images/dark.svg";
+import dragonIcon from "../../../public/images/dragon.svg";
+import electricIcon from "../../../public/images/electric.svg";
+import fairyIcon from "../../../public/images/fairy.svg";
+import fightingIcon from "../../../public/images/fighting.svg";
+import fireIcon from "../../../public/images/fire.svg";
+import flyingIcon from "../../../public/images/flying.svg";
+import ghostIcon from "../../../public/images/ghost.svg";
+import grassIcon from "../../../public/images/grass.svg";
+import groundIcon from "../../../public/images/ground.svg";
+import iceIcon from "../../../public/images/ice.svg";
+import poisonIcon from "../../../public/images/poison.svg";
+import psychicIcon from "../../../public/images/psychic.svg";
+import rockIcon from "../../../public/images/rock.svg";
+import steelIcon from "../../../public/images/steel.svg";
+import waterIcon from "../../../public/images/water.svg";
+
+const IconType = {
+  normal: normalIcon,
+  fire: fireIcon,
+  fighting: fightingIcon,
+  water: waterIcon,
+  flying: flyingIcon,
+  grass: grassIcon,
+  poison: poisonIcon,
+  electric: electricIcon,
+  ground: groundIcon,
+  psychic: psychicIcon,
+  rock: rockIcon,
+  ice: iceIcon,
+  bug: bugIcon,
+  dragon: dragonIcon,
+  ghost: ghostIcon,
+  dark: darkIcon,
+  steel: steelIcon,
+  fairy: fairyIcon,
+};
+
 const NavBar = (props: { color: ColorType; name: string; id: number }) => {
   const { color, name, id } = props;
+
   return (
     <div className={styles.navBar} style={{ backgroundColor: color }}>
       <span className={styles.navBar__backHomepage}>&lt;</span>
@@ -29,15 +70,24 @@ const TypeVarBox = (props: { types: Array<TypesType> }) => {
     <div className={styles.typeVarBox}>
       {types.map((type: TypesType) => {
         return (
-          <span
-            key={type.type.name}
-            className={styles.typeVarBox__each}
-            style={{
-              backgroundColor: ColorType[type.type.name],
-            }}
-          >
-            {type.type.name}
-          </span>
+          <>
+            <span
+              key={type.type.name}
+              className={styles.typeVarBox__each}
+              style={{
+                backgroundColor: ColorType[type.type.name],
+              }}
+            >
+              <Image
+                src={IconType[type.type.name]}
+                alt="icon-type"
+                loading="lazy"
+                width="10px"
+                height="10px"
+              />
+              {" " + type.type.name}
+            </span>
+          </>
         );
       })}
     </div>
@@ -175,24 +225,17 @@ const SpecieString = (props: {
   color: ColorType;
   name: string;
   info: string;
-  value: Array<string>;
+  value1: string;
+  value2: string;
 }) => {
-  const { color, name, info, value } = props;
+  const { color, name, info, value1, value2 } = props;
   return (
     <div className={styles.specie__card}>
       <div className={styles.specie__card__name}>{name}</div>
       <div className={styles.specie__card__info}>{info}</div>
-      {value.map((val) => {
-        return (
-          <div
-            key={val}
-            className={styles.specie__card__value}
-            style={{ color: color }}
-          >
-            {val}
-          </div>
-        );
-      })}
+      <div className={styles.specie__card__value} style={{ color: color }}>
+        {value1} {value2}
+      </div>
     </div>
   );
 };
@@ -202,11 +245,9 @@ const Footer = (props: {
   topPage: boolean;
   setTopPage: React.Dispatch<React.SetStateAction<boolean>>;
   gamesNames: Array<{ id: string; name: string; entryNum: number }>;
-  gameNumb: number;
   setGameNumb: React.Dispatch<React.SetStateAction<number>>;
 }) => {
-  const { color, topPage, setTopPage, gamesNames, gameNumb, setGameNumb } =
-    props;
+  const { color, topPage, setTopPage, gamesNames, setGameNumb } = props;
 
   const [game, setGame] = useState("Pokemon Shield");
   const [showMenu, setShowMenu] = useState(false);
@@ -242,6 +283,7 @@ const Footer = (props: {
             {gamesNames.map((gameName) => {
               return (
                 <li
+                  key={gameName.id}
                   onClick={() => {
                     setGame(gameName.name);
                     setShowMenu(!showMenu);
@@ -438,6 +480,7 @@ const DetailPage: NextPage<DataPropsType> = (props) => {
   return (
     <div>
       <NavBar color={color} name={data.name} id={data.id} />
+
       <BaseInfo
         color={color}
         types={data.types}
@@ -446,7 +489,12 @@ const DetailPage: NextPage<DataPropsType> = (props) => {
         height={data.height}
         id={data.id}
         sprite={data.sprites.other["official-artwork"].front_default}
-        description={detail.flavor_text_entries[gameNumb].flavor_text}
+        description={
+          typeof detail.flavor_text_entries[gameNumb].flavor_text ===
+          "undefined"
+            ? detail.flavor_text_entries[0].flavor_text
+            : detail.flavor_text_entries[gameNumb].flavor_text
+        }
       />
 
       <div className={styles.evolutions}>
@@ -471,14 +519,43 @@ const DetailPage: NextPage<DataPropsType> = (props) => {
             color={color}
             name="Base Happiness"
             info="The happiness when caught by a normal Pokéball; up to 255."
-            value={data.base_happiness}
+            value={detail.base_happiness}
           />
-
+          <SpecieString
+            color={color}
+            name="Egg Group"
+            info="A list of egg groups this species is a member of."
+            value1={detail.egg_groups[0].name}
+            value2={
+              detail.egg_groups.length === 1 ? "" : detail.egg_groups[1].name
+            }
+          />
+          <SpecieString
+            color={color}
+            name="Habitat"
+            info="The habitat this species can be encountered in a game."
+            value1={detail.habitat === "null" ? detail.habitat.name : "unknown"}
+            value2={""}
+          />
+          <SpecieString
+            color={color}
+            name="Shape"
+            info="The shape of this Pokémon for Pokédex search."
+            value1={detail.shape.name}
+            value2={""}
+          />
           <SpecieNumber
             color={color}
             name="Capture Rate"
             info="The higher the number, the easier the catch (upto 255)."
-            value={data.capture_rate}
+            value={detail.capture_rate}
+          />
+          <SpecieString
+            color={color}
+            name="Generation"
+            info="The generation this Pokémon species was introduced in."
+            value1={detail.generation.name.substring(11).toUpperCase()}
+            value2=""
           />
         </div>
       </div>
@@ -488,7 +565,6 @@ const DetailPage: NextPage<DataPropsType> = (props) => {
         topPage={topPage}
         setTopPage={setTopPage}
         gamesNames={gamesNames}
-        gameNumb={gameNumb}
         setGameNumb={setGameNumb}
       />
     </div>

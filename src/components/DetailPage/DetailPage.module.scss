@@ -91,7 +91,7 @@
   @include flex($direction: column);
   gap: 10px;
 
-  margin: 5px;
+  margin: 7px;
 
   font-weight: 800;
   color: $smoother-black;
@@ -215,16 +215,17 @@
     $direction: column,
     $align: center,
     $justify: center,
-    $wrap: flex-wrap
+    $wrap: wrap
   );
   gap: 10px;
+  text-transform: capitalize;
 
   @include media(tablet) {
     @include flex(
       $direction: row,
       $align: center,
       $justify: center,
-      $wrap: flex-wrap
+      $wrap: wrap
     );
   }
 
