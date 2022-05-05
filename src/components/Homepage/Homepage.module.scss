@@ -11,13 +11,13 @@
 .singleItem {
   display: flex;
   flex-direction: column;
-
   align-items: center;
 
   border: 10px solid white;
   box-shadow: 0rem 0rem 0.3125rem 0.3125rem rgb(213, 211, 211);
   border-radius: 10%;
   padding-bottom: 0.3125rem;
+  cursor: pointer;
 
   background: linear-gradient(
     180deg,

@@ -1,210 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { GetStaticProps, InferGetStaticPropsType, NextPage } from "next";
+import { NextPage } from "next/types";
 import Image from "next/image";
-import styles from "./Pokemon.module.scss";
+
 import ImageErrorUrl from "../../../public/images/image-not-found.svg";
+import styles from "./DetailPage.module.scss";
 
-type DataPropsType = {
-  data: {
-    abilities: AbilitiesType[];
-    forms: FormsType[];
-    game_indices: GameIndicesType[];
-    height: number;
-    id: number;
-    location_area_encounters: string;
-    name: string;
-    past_types: PastTypes[];
-    species: SpeciesType;
-    sprites: SpritesType;
-    stats: StatTypes[];
-    types: TypesType[];
-    weight: number;
-    chain: ChainType;
-    base_happiness: number;
-    capture_rate: number;
-    color: ColorGroupType;
-    egg_groups: EggGroupsType[];
-    gender_rate: number;
-    generation: GenerationType[];
-    habitat: HabitatType;
-    has_gender_differences: boolean;
-    hatch_counter: 20;
-    is_baby: boolean;
-    is_legendary: boolean;
-    is_mythical: boolean;
-    pokedex_numbers: PokedexNumbersType[];
-    shape: ShapeType;
-  };
-};
-
-type AbilitiesType = {
-  ability: {
-    name: string;
-  };
-  is_hidden: boolean;
-  slot: number;
-};
-
-type FormsType = {
-  name: string;
-  url: string;
-};
-
-type GameIndicesType = {
-  game_index: number;
-  version: {
-    name: string;
-    url: string;
-  };
-};
-
-type PastTypes = {
-  generation: {
-    name: string;
-    url: string;
-  };
-  types: {
-    slot: 1;
-    type: {
-      name: string;
-      url: string;
-    };
-  };
-};
-
-type SpeciesType = {
-  name: string;
-  url: string;
-};
-
-type SpritesType = {
-  other: {
-    dream_world: {
-      front_default: string;
-      front_female: string;
-    };
-    home: {
-      front_default: string;
-      front_female: string;
-      front_shiny: string;
-      front_shiny_female: string;
-    };
-    "official-artwork": {
-      front_default: string;
-    };
-  };
-};
-
-type StatTypes = {
-  base_stat: number;
-  stat: {
-    name: string;
-  };
-};
-
-type TypesType = {
-  slot: number;
-  type: {
-    name:
-      | "normal"
-      | "fire"
-      | "fighting"
-      | "water"
-      | "flying"
-      | "grass"
-      | "poison"
-      | "electric"
-      | "ground"
-      | "psychic"
-      | "rock"
-      | "ice"
-      | "bug"
-      | "dragon"
-      | "ghost"
-      | "dark"
-      | "steel"
-      | "fairy";
-    url: string;
-  };
-};
-
-type ChainType = {
-  evolution_details: EvolutionDetailsType[];
-  evolves_to: ChainType[];
-  is_baby: boolean;
-  species: { name: string };
-};
-
-type EvolutionDetailsType = {
-  gender: string;
-  held_item: string;
-  item: string;
-  known_move: string;
-  known_move_type: string;
-  location: string;
-  min_affection: number;
-  min_beauty: number;
-  min_happiness: number;
-  min_level: number;
-  needs_overworld_rain: boolean;
-  party_species: string; //not sure
-  party_type: string;
-  relative_physical_stats: string;
-  time_of_day: string;
-  trade_species: string;
-  trigger: {
-    name: string;
-  };
-  turn_upside_down: boolean;
-};
-
-type ColorGroupType = {
-  name: string;
-};
-
-type EggGroupsType = {
-  name: string;
-};
-
-type GenerationType = {
-  name: string;
-};
-
-type HabitatType = {
-  name: string;
-};
-
-type PokedexNumbersType = {
-  entry_number: NumberConstructor;
-  pokedex: {
-    name: string;
-  };
-};
-
-type ShapeType = {
-  name: string;
-};
-
-enum ColorType {
-  normal = "rgb(168, 168, 120)",
-  fire = "rgb(240, 128, 48)",
-  fighting = "rgb(192, 48, 40)",
-  water = "rgb(104, 144, 240)",
-  flying = "rgb(168, 144, 240)",
-  grass = "rgb(120, 200, 80)",
-  poison = "rgb(160, 64, 160)",
-  electric = "rgb(248, 208, 48)",
-  ground = "rgb(224, 192, 104)",
-  psychic = "rgb(248, 88, 136)",
-  rock = "rgb(184, 160, 56)",
-  ice = "rgb(152, 216, 216)",
-  bug = "rgb(168, 184, 32)",
-  dragon = "rgb(112, 56, 248)",
-  ghost = "rgb(112, 88, 152)",
-  dark = "rgb(112, 88, 72)",
-  steel = "rgb(184, 184, 208)",
-  fairy = "rgb(238, 153, 172)",
-}
+import {
+  ColorType,
+  TypesType,
+  AbilitiesType,
+  DataPropsType,
+} from "../../helpers/types";
 
 const NavBar = (props: { color: ColorType; name: string; id: number }) => {
   const { color, name, id } = props;
@@ -224,6 +30,7 @@ const TypeVarBox = (props: { types: Array<TypesType> }) => {
       {types.map((type: TypesType) => {
         return (
           <span
+            key={type.type.name}
             className={styles.typeVarBox__each}
             style={{
               backgroundColor: ColorType[type.type.name],
@@ -247,6 +54,7 @@ const AbilityVarBox = (props: {
       {abilities.map((ability: AbilitiesType) => {
         return (
           <span
+            key={ability.ability.name}
             className={styles.abilityVarBox__each}
             style={{ backgroundColor: color }}
           >
@@ -367,7 +175,11 @@ const SpecieString = (props: {
       <div className={styles.specie__card__info}>{info}</div>
       {value.map((val) => {
         return (
-          <div className={styles.specie__card__value} style={{ color: color }}>
+          <div
+            key={val}
+            className={styles.specie__card__value}
+            style={{ color: color }}
+          >
             {val}
           </div>
         );
@@ -449,12 +261,14 @@ const GameMenu = (props: {
   );
 };
 
-const Pokemon: NextPage<DataPropsType> = (props) => {
-  const { data } = props;
+const DetailPage: NextPage<DataPropsType> = (props) => {
+  const { data, detail } = props;
 
   const [topPage, setTopPage] = useState(false);
 
   const color = ColorType[data.types[0].type.name];
+
+  console.log(detail.flavor_text_entries);
 
   useEffect(() => {
     if (topPage) {
@@ -516,4 +330,4 @@ const Pokemon: NextPage<DataPropsType> = (props) => {
   );
 };
 
-export default Pokemon;
+export default DetailPage;

@@ -1,41 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 import Image from "next/image";
+import Link from "next/link";
 
-import styles from "./Homepage.module.scss";
+import styles from "./HomePage.module.scss";
 import ImageErrorUrl from "../../../public/images/image-not-found.svg";
 import imagePokeball from "../../../public/images/pokeball.png";
 import imageSearch from "../../../public/images/searchimg.svg";
 
-const BASE_URL = "https://pokeapi.co/api/v2/pokemon/";
-
-type PokeAPI = { name: string; url: string };
-type CardProps = { name: string; id: string; imageUrl: string };
-type SearchBarProps = {
-  data: Array<PokeAPI>;
-  setPokemons: React.Dispatch<React.SetStateAction<PokeAPI[]>>;
-};
-
-enum ColorType {
-  normal = "rgb(168, 168, 120)",
-  fire = "rgb(240, 128, 48)",
-  fighting = "rgb(192, 48, 40)",
-  water = "rgb(104, 144, 240)",
-  flying = "rgb(168, 144, 240)",
-  grass = "rgb(120, 200, 80)",
-  poison = "rgb(160, 64, 160)",
-  electric = "rgb(248, 208, 48)",
-  ground = "rgb(224, 192, 104)",
-  psychic = "rgb(248, 88, 136)",
-  rock = "rgb(184, 160, 56)",
-  ice = "rgb(152, 216, 216)",
-  bug = "rgb(168, 184, 32)",
-  dragon = "rgb(112, 56, 248)",
-  ghost = "rgb(112, 88, 152)",
-  dark = "rgb(112, 88, 72)",
-  steel = "rgb(184, 184, 208)",
-  fairy = "rgb(238, 153, 172)",
-}
+import { PokeAPI, SearchBarProps, CardProps } from "../../helpers/types";
 
 const Header = () => {
   return (
@@ -74,19 +47,22 @@ const SearchBar = (props: SearchBarProps) => {
 
 const Card = (props: CardProps) => {
   const { name, id, imageUrl } = props;
+
   return (
-    <div className={styles.singleItem}>
-      <div className={styles.singleItem__id}>#{id}</div>
-      <div className={styles.singleItem__image}>
-        <Image
-          src={parseInt(id) < 808 ? imageUrl : ImageErrorUrl}
-          alt={name}
-          loading="lazy"
-          layout="fill"
-        />
+    <Link href={`/pokemon/${name}?id=${id}`} passHref>
+      <div className={styles.singleItem}>
+        <div className={styles.singleItem__id}>#{id}</div>
+        <div className={styles.singleItem__image}>
+          <Image
+            src={parseInt(id) < 808 ? imageUrl : ImageErrorUrl}
+            alt={name}
+            loading="lazy"
+            layout="fill"
+          />
+        </div>
+        <div className={styles.singleItem__name}>{name}</div>
       </div>
-      <div className={styles.singleItem__name}>{name}</div>
-    </div>
+    </Link>
   );
 };
 
@@ -129,7 +105,7 @@ const GridCards = (props: { pokemons: Array<PokeAPI> }) => {
   );
 };
 
-const Homepage = ({ data }: InferGetStaticPropsType<GetStaticProps>) => {
+const HomePage = ({ data }: InferGetStaticPropsType<GetStaticProps>) => {
   const [pokemons, setPokemons] = useState<Array<PokeAPI>>([]);
 
   useEffect(() => {
@@ -145,4 +121,4 @@ const Homepage = ({ data }: InferGetStaticPropsType<GetStaticProps>) => {
   );
 };
 
-export default Homepage;
+export default HomePage;
