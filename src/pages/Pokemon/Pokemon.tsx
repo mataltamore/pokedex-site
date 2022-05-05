@@ -3,9 +3,6 @@ import { GetStaticProps, InferGetStaticPropsType, NextPage } from "next";
 import Image from "next/image";
 import styles from "./Pokemon.module.scss";
 import ImageErrorUrl from "../../../public/images/image-not-found.svg";
-import backHomeImage from "../../../public/images/back-arrow-icon.svg";
-import { Value } from "sass";
-import { ADDRGETNETWORKPARAMS } from "dns";
 
 type DataPropsType = {
   data: {
@@ -22,6 +19,21 @@ type DataPropsType = {
     stats: StatTypes[];
     types: TypesType[];
     weight: number;
+    chain: ChainType;
+    base_happiness: number;
+    capture_rate: number;
+    color: ColorGroupType;
+    egg_groups: EggGroupsType[];
+    gender_rate: number;
+    generation: GenerationType[];
+    habitat: HabitatType;
+    has_gender_differences: boolean;
+    hatch_counter: 20;
+    is_baby: boolean;
+    is_legendary: boolean;
+    is_mythical: boolean;
+    pokedex_numbers: PokedexNumbersType[];
+    shape: ShapeType;
   };
 };
 
@@ -114,6 +126,63 @@ type TypesType = {
       | "fairy";
     url: string;
   };
+};
+
+type ChainType = {
+  evolution_details: EvolutionDetailsType[];
+  evolves_to: ChainType[];
+  is_baby: boolean;
+  species: { name: string };
+};
+
+type EvolutionDetailsType = {
+  gender: string;
+  held_item: string;
+  item: string;
+  known_move: string;
+  known_move_type: string;
+  location: string;
+  min_affection: number;
+  min_beauty: number;
+  min_happiness: number;
+  min_level: number;
+  needs_overworld_rain: boolean;
+  party_species: string; //not sure
+  party_type: string;
+  relative_physical_stats: string;
+  time_of_day: string;
+  trade_species: string;
+  trigger: {
+    name: string;
+  };
+  turn_upside_down: boolean;
+};
+
+type ColorGroupType = {
+  name: string;
+};
+
+type EggGroupsType = {
+  name: string;
+};
+
+type GenerationType = {
+  name: string;
+};
+
+type HabitatType = {
+  name: string;
+};
+
+type PokedexNumbersType = {
+  entry_number: NumberConstructor;
+  pokedex: {
+    name: string;
+  };
+};
+
+type ShapeType = {
+  name: string;
 };
 
 enum ColorType {
@@ -217,7 +286,7 @@ const BaseInfo = (props: {
             <div>Weight</div>
             <div>Height</div>
           </div>
-          <div className={styles.weightHeightVarBox} style={{ color: color }}>
+          <div className={styles.weightHeightVarBox}>
             <div>{weight} kg</div>
             <div>{(height * 0.1).toFixed(1)} m</div>
           </div>
@@ -240,15 +309,69 @@ const BaseInfo = (props: {
   );
 };
 
-const EvolutionChain = () => {
+const EvolutionCard = (props: {
+  color: ColorType;
+  name: string;
+  image: string;
+}) => {
+  const { color, name, image } = props;
   return (
-    <div className={styles.evolutions}>
-      <div>Evolution chain</div>
-      <div className={styles.evolutions__images}>
-        <div className={styles.evolutions__images__singleImage}>Images</div>
-        <div className={styles.evolutions__images__singleImage}>Images</div>
-        <div className={styles.evolutions__images__singleImage}>Images</div>
+    <div className={styles.evolutions__card}>
+      <div>
+        <Image
+          src={image}
+          alt="search-image"
+          loading="lazy"
+          width="150px"
+          height="150px"
+        />
       </div>
+      <div
+        className={styles.evolutions__card__name}
+        style={{ backgroundColor: color }}
+      >
+        {name}
+      </div>
+    </div>
+  );
+};
+
+const SpecieNumber = (props: {
+  color: ColorType;
+  name: string;
+  info: string;
+  value: number;
+}) => {
+  const { color, name, info, value } = props;
+  return (
+    <div className={styles.specie__card}>
+      <div className={styles.specie__card__name}>{name}</div>
+      <div className={styles.specie__card__info}>{info}</div>
+      <div className={styles.specie__card__value} style={{ color: color }}>
+        {value}
+      </div>
+    </div>
+  );
+};
+
+const SpecieString = (props: {
+  color: ColorType;
+  name: string;
+  info: string;
+  value: Array<string>;
+}) => {
+  const { color, name, info, value } = props;
+  return (
+    <div className={styles.specie__card}>
+      <div className={styles.specie__card__name}>{name}</div>
+      <div className={styles.specie__card__info}>{info}</div>
+      {value.map((val) => {
+        return (
+          <div className={styles.specie__card__value} style={{ color: color }}>
+            {val}
+          </div>
+        );
+      })}
     </div>
   );
 };
@@ -341,7 +464,7 @@ const Pokemon: NextPage<DataPropsType> = (props) => {
   }, [topPage]);
 
   return (
-    <>
+    <div>
       <NavBar color={color} name={data.name} id={data.id} />
       <BaseInfo
         color={color}
@@ -353,11 +476,32 @@ const Pokemon: NextPage<DataPropsType> = (props) => {
         sprite={data.sprites.other["official-artwork"].front_default}
       />
 
-      <EvolutionChain />
-      <div className={styles.specie}>Info Specie - scroll area</div>
+      <div className={styles.evolutions__text} style={{ color: color }}>
+        Evolution Chain
+      </div>
+      <EvolutionCard
+        color={color}
+        name={data.name}
+        image={data.sprites.other["official-artwork"].front_default}
+      />
+
+      <div className={styles.specie}>
+        <SpecieNumber
+          color={color}
+          name="Base Happiness"
+          info="The happiness when caught by a normal Pokéball; up to 255."
+          value={data.base_happiness}
+        />
+        <SpecieNumber
+          color={color}
+          name="Capture Rate"
+          info="The higher the number, the easier the catch (upto 255)."
+          value={data.capture_rate}
+        />
+      </div>
 
       <Footer color={color} topPage={topPage} setTopPage={setTopPage} />
-    </>
+    </div>
   );
 };
 
