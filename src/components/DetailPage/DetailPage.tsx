@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { NextPage } from "next/types";
 import Image from "next/image";
+import Link from "next/link";
 
 import pokeball from "../../../public/images/pokeball.svg";
 import styles from "./DetailPage.module.scss";
@@ -59,7 +60,9 @@ const NavBar = (props: { color: ColorType; name: string; id: number }) => {
 
   return (
     <div className={styles.navBar} style={{ backgroundColor: color }}>
-      <span className={styles.navBar__backHomepage}>&lt;</span>
+      <span className={styles.navBar__backHomepage}>
+        <Link href="/">&lt;</Link>
+      </span>
       <span className={styles.navBar__currentPokemonName}>{name}</span>
       <span className={styles.navBar__currentPokemonNumber}>#{id}</span>
     </div>
@@ -247,12 +250,12 @@ const Footer = (props: {
   return (
     <div className={styles.footer}>
       <div className={styles.footer__btns}>
-        <button
+        <div
           className={styles.footer__btns__backBtn}
           style={{ backgroundColor: color }}
         >
-          Back btn
-        </button>
+          <Link href="/">Back to HomePage</Link>
+        </div>
 
         <button
           className={styles.footer__btns__topBtn}
