@@ -74,6 +74,12 @@
         color: $dark-grey;
       }
     }
+
+    &__image {
+      position: relative;
+      width: 300px;
+      height: 300px;
+    }
   }
 
   @include media(tablet) {
@@ -104,6 +110,9 @@
   margin: 5px;
 
   &__each {
+    @include flex($align: center);
+    gap: 2px;
+
     font-weight: 800;
     font-size: small;
     color: white;
@@ -116,6 +125,12 @@
     border: none;
     border-radius: 5px;
     box-shadow: 0rem 0rem 0.125rem 0.125rem $shadow-pkm;
+
+    &__image {
+      position: relative;
+      width: 10px;
+      height: 10px;
+    }
   }
 }
 

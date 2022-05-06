@@ -72,22 +72,23 @@ const TypeVarBox = (props: { types: Array<TypesType> }) => {
     <div className={styles.typeVarBox}>
       {types.map((type: TypesType) => {
         return (
-          <span
+          <div
             key={type.type.name}
             className={styles.typeVarBox__each}
             style={{
               backgroundColor: ColorType[type.type.name],
             }}
           >
-            <Image
-              src={IconMapping[type.type.name]}
-              alt="icon-type"
-              loading="lazy"
-              width="10"
-              height="10"
-            />
-            {" " + type.type.name}
-          </span>
+            <div className={styles.typeVarBox__each__image}>
+              <Image
+                src={IconMapping[type.type.name]}
+                alt="icon-type"
+                loading="lazy"
+                layout="fill"
+              />
+            </div>
+            <div>{" " + type.type.name}</div>
+          </div>
         );
       })}
     </div>
@@ -158,8 +159,7 @@ const BaseInfo = (props: {
             src={id < 808 ? sprite : pokeball}
             alt="official-artwork"
             loading="lazy"
-            width="300px"
-            height="300px"
+            layout="fill"
           />
         </div>
 
