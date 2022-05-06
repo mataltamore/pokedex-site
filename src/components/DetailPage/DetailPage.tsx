@@ -11,9 +11,11 @@ import {
   TypesType,
   AbilitiesType,
   DataPropsType,
+  DetailType,
 } from "../../helpers/types";
 
 import gamesName from "../../../public/api/games-name.json";
+import ContentSpecies from "../../../public/api/content-species.json";
 
 import normalIcon from "../../../public/images/normal.svg";
 import bugIcon from "../../../public/images/bug.svg";
@@ -137,8 +139,8 @@ const BaseInfo = (props: {
       <div className={styles.baseInfo__grid}>
         <div className={styles.baseInfo__grid__column}>
           <div className={styles.typeAbilityBox}>
-            <div>Type</div>
-            <div>Ability</div>
+            <p>Type</p>
+            <p>Ability</p>
           </div>
           <div>
             <TypeVarBox types={types} />
@@ -147,12 +149,12 @@ const BaseInfo = (props: {
         </div>
         <div className={styles.baseInfo__grid__column}>
           <div className={styles.weightHeightBox}>
-            <div>Weight</div>
-            <div>Height</div>
+            <p>Weight</p>
+            <p>Height</p>
           </div>
           <div className={styles.weightHeightVarBox}>
-            <div>{weight} kg</div>
-            <div>{(height * 0.1).toFixed(1)} m</div>
+            <p>{weight} kg</p>
+            <p>{(height * 0.1).toFixed(1)} m</p>
           </div>
         </div>
       </div>
@@ -167,12 +169,12 @@ const BaseInfo = (props: {
         </div>
 
         <div className={styles.baseInfo__description__container}>
-          <div className={styles.baseInfo__description__container__title}>
+          <p className={styles.baseInfo__description__container__title}>
             Description
-          </div>
-          <div className={styles.baseInfo__description__container__text}>
+          </p>
+          <p className={styles.baseInfo__description__container__text}>
             {description}
-          </div>
+          </p>
         </div>
       </div>
     </div>
@@ -190,50 +192,66 @@ const EvolutionCard = (props: {
       <div className={styles.evolutions__card__image}>
         <Image src={image} alt="search-image" loading="lazy" layout="fill" />
       </div>
-      <div
+      <p
         className={styles.evolutions__card__name}
         style={{ backgroundColor: color }}
       >
         {name}
-      </div>
+      </p>
     </div>
   );
 };
 
-const SpecieNumber = (props: {
+const SpecieCard = (props: {
   color: ColorType;
   name: string;
   info: string;
-  value: number;
+  items: Array<string>;
 }) => {
-  const { color, name, info, value } = props;
+  const { color, name, info, items } = props;
   return (
     <div className={styles.specie__card}>
-      <div className={styles.specie__card__name}>{name}</div>
-      <div className={styles.specie__card__info}>{info}</div>
-      <div className={styles.specie__card__value} style={{ color: color }}>
-        {value}
-      </div>
+      <p className={styles.specie__card__name}>{name}</p>
+      <p className={styles.specie__card__info}>{info}</p>
+      <p className={styles.specie__card__value} style={{ color: color }}>
+        {items.map((item) => {
+          return item.concat(" ");
+        })}
+      </p>
     </div>
   );
 };
 
-const SpecieString = (props: {
-  color: ColorType;
-  name: string;
-  info: string;
-  value1: string;
-  value2: string;
-}) => {
-  const { color, name, info, value1, value2 } = props;
+const SpecieCards = (props: { color: ColorType; detail: DetailType }) => {
+  const { color, detail } = props;
+
+  const valueSpecies = [
+    [detail.base_happiness.toString()],
+    [
+      detail.egg_groups[0].name,
+      detail.egg_groups.length === 1 ? "" : detail.egg_groups[1].name,
+    ],
+    [detail.habitat.name === "null" ? detail.habitat.name : "unknown"],
+    [detail.shape.name],
+    [detail.generation.name.substring(11).toUpperCase()],
+    [detail.capture_rate.toString()],
+  ];
+
   return (
-    <div className={styles.specie__card}>
-      <div className={styles.specie__card__name}>{name}</div>
-      <div className={styles.specie__card__info}>{info}</div>
-      <div className={styles.specie__card__value} style={{ color: color }}>
-        {value1} {value2}
-      </div>
-    </div>
+    <>
+      <p className={styles.specieTitle} style={{ color: color }}>
+        Species Data
+      </p>
+      <p className={styles.specie}>
+        {ContentSpecies.species.map(
+          (current: { id: number; name: string; info: string }, i: number) => {
+            const { id, name, info } = current;
+            const items = valueSpecies[i];
+            return <SpecieCard key={id} {...{ color, name, info, items }} />;
+          }
+        )}
+      </p>
+    </>
   );
 };
 
@@ -305,10 +323,10 @@ const GameMenu = (props: {
   const { game, showMenu, setShowMenu, children } = props;
 
   return (
-    <div onClick={() => setShowMenu(!showMenu)}>
+    <p onClick={() => setShowMenu(!showMenu)}>
       Select Game: {game}
       {showMenu && children}
-    </div>
+    </p>
   );
 };
 
@@ -340,9 +358,9 @@ const DetailPage: NextPage<DataPropsType> = (props) => {
       />
 
       <div className={styles.evolutions}>
-        <div className={styles.evolutions__title} style={{ color: color }}>
+        <p className={styles.evolutions__title} style={{ color: color }}>
           Evolution Chain
-        </div>
+        </p>
         <div>
           <EvolutionCard
             color={color}
@@ -352,57 +370,7 @@ const DetailPage: NextPage<DataPropsType> = (props) => {
         </div>
       </div>
 
-      <div>
-        <div className={styles.specieTitle} style={{ color: color }}>
-          Species Data
-        </div>
-        <div className={styles.specie}>
-          <SpecieNumber
-            color={color}
-            name="Base Happiness"
-            info="The happiness when caught by a normal Pokéball; up to 255."
-            value={detail.base_happiness}
-          />
-          <SpecieString
-            color={color}
-            name="Egg Group"
-            info="A list of egg groups this species is a member of."
-            value1={detail.egg_groups[0].name}
-            value2={
-              detail.egg_groups.length === 1 ? "" : detail.egg_groups[1].name
-            }
-          />
-          <SpecieString
-            color={color}
-            name="Habitat"
-            info="The habitat this species can be encountered in a game."
-            value1={
-              detail.habitat.name === "null" ? detail.habitat.name : "unknown"
-            }
-            value2={""}
-          />
-          <SpecieString
-            color={color}
-            name="Shape"
-            info="The shape of this Pokémon for Pokédex search."
-            value1={detail.shape.name}
-            value2={""}
-          />
-          <SpecieNumber
-            color={color}
-            name="Capture Rate"
-            info="The higher the number, the easier the catch (upto 255)."
-            value={detail.capture_rate}
-          />
-          <SpecieString
-            color={color}
-            name="Generation"
-            info="The generation this Pokémon species was introduced in."
-            value1={detail.generation.name.substring(11).toUpperCase()}
-            value2=""
-          />
-        </div>
-      </div>
+      <SpecieCards {...{ color, detail }} />
 
       <Footer
         color={color}

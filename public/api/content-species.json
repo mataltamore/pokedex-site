@@ -1,0 +1,34 @@
+{
+  "species": [
+    {
+      "id": 0,
+      "name": "Base Happiness",
+      "info": "The happiness when caught by a normal Pokéball; up to 255."
+    },
+    {
+      "id": 1,
+      "name": "Egg Group",
+      "info": "A list of egg groups this species is a member of."
+    },
+    {
+      "id": 2,
+      "name": "Habitat",
+      "info": "The habitat this species can be encountered in a game."
+    },
+    {
+      "id": 3,
+      "name": "Shape",
+      "info": "The shape of this Pokémon for Pokédex search."
+    },
+    {
+      "id": 4,
+      "name": "Generation",
+      "info": "The generation this Pokémon species was introduced in."
+    },
+    {
+      "id": 5,
+      "name": "Capture Rate",
+      "info": "The higher the number, the easier the catch (upto 255)."
+    }
+  ]
+}

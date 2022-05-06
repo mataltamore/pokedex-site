@@ -162,6 +162,8 @@
 
   font-weight: 800;
   margin: 5px;
+
+  color: $smoother-black;
 }
 
 .weightHeightVarBox {
@@ -229,6 +231,7 @@
   font-weight: 800;
 
   text-shadow: 0.125rem 0.125rem 0.2rem $shadow-pkm;
+  text-transform: capitalize;
 }
 
 .specie {
@@ -239,7 +242,6 @@
     $wrap: wrap
   );
   gap: 10px;
-  text-transform: capitalize;
 
   @include media(tablet) {
     @include flex(
@@ -288,6 +290,7 @@
     &__value {
       font-size: 20px;
       font-weight: 800;
+      text-transform: capitalize;
 
       margin: 10px 10px;
     }

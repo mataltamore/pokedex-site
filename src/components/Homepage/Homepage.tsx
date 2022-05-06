@@ -15,7 +15,7 @@ const Header = () => {
       <div className={styles.pokedexTitle__image}>
         <Image src={pokeball} alt="pokeball-image" loading="lazy" />
       </div>
-      <div>Pokédex</div>
+      <p>Pokédex</p>
     </div>
   );
 };
@@ -59,7 +59,7 @@ const Card = (props: CardProps) => {
             layout="fill"
           />
         </div>
-        <div className={styles.singleItem__name}>{name}</div>
+        <p className={styles.singleItem__name}>{name}</p>
       </div>
     </Link>
   );
