@@ -242,7 +242,7 @@ const SpecieCards = (props: { color: ColorType; detail: DetailType }) => {
       <p className={styles.specieTitle} style={{ color: color }}>
         Species Data
       </p>
-      <p className={styles.specie}>
+      <div className={styles.specie}>
         {ContentSpecies.species.map(
           (current: { id: number; name: string; info: string }, i: number) => {
             const { id, name, info } = current;
@@ -250,7 +250,7 @@ const SpecieCards = (props: { color: ColorType; detail: DetailType }) => {
             return <SpecieCard key={id} {...{ color, name, info, items }} />;
           }
         )}
-      </p>
+      </div>
     </>
   );
 };
@@ -323,10 +323,10 @@ const GameMenu = (props: {
   const { game, showMenu, setShowMenu, children } = props;
 
   return (
-    <p onClick={() => setShowMenu(!showMenu)}>
+    <div onClick={() => setShowMenu(!showMenu)}>
       Select Game: {game}
       {showMenu && children}
-    </p>
+    </div>
   );
 };
 
