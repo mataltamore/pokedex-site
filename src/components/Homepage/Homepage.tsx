@@ -4,30 +4,39 @@ import Image from "next/image";
 import Link from "next/link";
 
 import styles from "./HomePage.module.scss";
-import pokeball from "../../../public/images/pokeball.svg";
+import PokeIcon from "../../../public/images/pokeball.svg";
 import imageSearch from "../../../public/images/searchimg.svg";
 
-import { PokeAPI, SearchBarProps, CardProps } from "../../helpers/types";
+import {
+  ArrayChildrenProp,
+  PokeAPI,
+  SearchBarProps,
+  CardProps,
+} from "../../helpers/types";
 
 const Header = () => {
   return (
-    <div className={styles.pokedexTitle}>
-      <div className={styles.pokedexTitle__image}>
-        <Image src={pokeball} alt="pokeball-image" loading="lazy" />
+    <header className={styles.header}>
+      <div className={styles.header__image}>
+        <Image src={PokeIcon} alt="pokeball" layout="fill" loading="lazy" />
       </div>
-      <p>Pokédex</p>
-    </div>
+      <h1 className={styles.header__title}>Pokédex</h1>
+    </header>
   );
+};
+
+const Main = ({ children }: ArrayChildrenProp) => {
+  return <div className={styles.defaultLayout}>{children}</div>;
 };
 
 const SearchBar = (props: SearchBarProps) => {
   const { data, setPokemons } = props;
   return (
-    <div className={styles.searchBar}>
-      <div className={styles.searchBar__container}>
+    <div className={styles.searchBarWrapper}>
+      <div className={styles.searchBar}>
         <input
           type="text"
-          className={styles.searchBar__container__input}
+          className={styles.searchBar__input}
           onChange={(e) => {
             setPokemons(
               data.filter((pokemon: PokeAPI) =>
@@ -36,32 +45,16 @@ const SearchBar = (props: SearchBarProps) => {
             );
           }}
         />
-        <div className={styles.searchBar__container__image}>
-          <Image src={imageSearch} alt="search-image" loading="lazy" />
+        <div className={styles.searchBar__image}>
+          <Image
+            src={imageSearch}
+            alt="search-image"
+            layout="fill"
+            loading="lazy"
+          />
         </div>
       </div>
     </div>
-  );
-};
-
-const Card = (props: CardProps) => {
-  const { name, id, imageUrl } = props;
-
-  return (
-    <Link href={`/pokemon/${name}?id=${id}`} passHref>
-      <div className={styles.singleItem}>
-        <div className={styles.singleItem__id}>#{id}</div>
-        <div className={styles.singleItem__image}>
-          <Image
-            src={parseInt(id) < 808 ? imageUrl : pokeball}
-            alt={name}
-            loading="lazy"
-            layout="fill"
-          />
-        </div>
-        <p className={styles.singleItem__name}>{name}</p>
-      </div>
-    </Link>
   );
 };
 
@@ -81,26 +74,53 @@ const GridCards = (props: { pokemons: Array<PokeAPI> }) => {
       ? `https://raw.githubusercontent.com/HybridShivam/Pokemon/master/assets/thumbnails-compressed/${id}.png`
       : `https://raw.githubusercontent.com/HybridShivam/Pokemon/master/assets/images/${id}.png`;
   }
-  return (
-    <div className={styles.cardItems}>
-      {pokemons.length === 0 ? (
-        <div>Data not found</div>
-      ) : (
-        pokemons.map((pokemon: PokeAPI) => {
-          [pokemonId, paddedPokemonId] = extractIdFromUrl(pokemon.url);
-          imageUrl = getImageById(paddedPokemonId, true);
 
-          return (
-            <Card
-              key={pokemonId}
-              name={pokemon.name}
-              id={pokemonId}
-              imageUrl={imageUrl}
-            />
-          );
-        })
+  return (
+    <>
+      {pokemons.length === 0 ? (
+        <p style={{ marginInline: "auto" }}>Loading...</p>
+      ) : (
+        <div className={styles.gridLayout}>
+          {pokemons.map((pokemon: PokeAPI) => {
+            [pokemonId, paddedPokemonId] = extractIdFromUrl(pokemon.url);
+            imageUrl = getImageById(paddedPokemonId, true);
+
+            return (
+              <Card
+                key={pokemonId}
+                name={pokemon.name}
+                id={pokemonId}
+                imageUrl={imageUrl}
+              />
+            );
+          })}
+        </div>
       )}
-    </div>
+    </>
+  );
+};
+
+const Card = (props: CardProps) => {
+  const { name, id, imageUrl } = props;
+
+  return (
+    <Link href={`/pokemon/${name}?id=${id}`} passHref>
+      <article className={styles.card}>
+        <h2>
+          <span style={{ fontSize: "0.875rem" }}>#</span>
+          {id}
+        </h2>
+        <div className={styles.card__image}>
+          <Image
+            src={parseInt(id) < 808 ? imageUrl : PokeIcon}
+            alt={name}
+            layout="fill"
+            loading="lazy"
+          />
+        </div>
+        <h2 className={styles.card__name}>{name}</h2>
+      </article>
+    </Link>
   );
 };
 
@@ -114,8 +134,10 @@ const HomePage = ({ data }: InferGetStaticPropsType<GetStaticProps>) => {
   return (
     <>
       <Header />
-      <SearchBar data={data.results} setPokemons={setPokemons} />
-      <GridCards pokemons={pokemons} />
+      <Main>
+        <SearchBar data={data.results} setPokemons={setPokemons} />
+        <GridCards pokemons={pokemons} />
+      </Main>
     </>
   );
 };

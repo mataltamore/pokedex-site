@@ -17,11 +17,19 @@
   $direction: row,
   $align: flex-start,
   $justify: flex-start,
+  $gap: 0rem,
   $wrap: nowrap
 ) {
   display: flex;
   flex-direction: $direction;
   align-items: $align;
   justify-content: $justify;
+  gap: $gap;
   flex-wrap: $wrap;
+}
+
+@mixin image($w, $h) {
+  position: relative;
+  width: $w;
+  height: $h;
 }

@@ -6,6 +6,7 @@ export type SearchBarProps = {
   data: Array<PokeAPI>;
   setPokemons: React.Dispatch<React.SetStateAction<PokeAPI[]>>;
 };
+export type ArrayChildrenProp = { children: Array<JSX.Element> };
 
 // DetailPage Props
 

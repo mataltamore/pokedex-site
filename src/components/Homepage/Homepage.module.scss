@@ -1,125 +1,134 @@
 @import "/styles/customs/mixins";
 @import "/styles/customs/variables";
 
-.cardItems {
-  display: grid;
-  grid-gap: 1.25rem;
-  grid-template-columns: repeat(auto-fill, 9.375rem);
-  justify-content: center;
-}
-
-.singleItem {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  border: 10px solid white;
-  box-shadow: 0rem 0rem 0.3125rem 0.3125rem rgb(213, 211, 211);
-  border-radius: 10%;
-  padding-bottom: 0.3125rem;
-  cursor: pointer;
-
-  background: linear-gradient(
-    180deg,
-    rgb(255, 249, 234) 0%,
-    rgba(255, 255, 255, 1) 100%
+.defaultLayout {
+  @include flex(
+    $direction: column,
+    $align: stretch,
+    $justify: center,
+    $gap: 2rem
   );
+  padding: 0 2rem;
 
-  &__id {
-    margin-top: 0.3125rem;
-    color: black;
-    opacity: 0.5;
-    font-weight: 800;
-  }
-
-  &__image {
-    position: relative;
-    width: 6.25rem;
-    height: 6.25rem;
-    margin-top: 0.625rem;
-    margin-bottom: 0.625rem;
-  }
-
-  &__name {
-    font-weight: 800;
-    text-transform: capitalize;
-  }
-
-  &__types {
-    margin-bottom: 0.3125rem;
-    margin-top: 0.3125rem;
-    display: flex;
-    justify-content: center;
-    gap: 0.3125rem;
-
-    font-size: 0.625rem;
-    color: white;
-    border-radius: 10%;
-    padding: 0.3125rem;
+  @include media(desktop) {
+    margin-inline: auto;
+    max-width: 75rem;
   }
 }
 
-.pokedexTitle {
-  display: flex;
-  justify-content: center;
-  gap: 0.3125rem;
-  margin: 3.125rem;
+.titleGradient {
+  background: -webkit-linear-gradient(#eee, #333);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
-  font-weight: 800;
-  font-size: 2.75rem;
-
-  color: rgb(248, 113, 113);
-
-  @include media(tablet) {
-    font-size: 3.75rem;
-  }
+.header {
+  @include flex($justify: center, $align: center, $gap: 0.875rem);
+  padding: 3rem;
 
   &__image {
-    width: 2.8125rem;
-    height: 2.8125rem;
+    @include image($w: 2.8125rem, $h: 2.8125rem);
+
+    @include media(desktop) {
+      @include image($w: 3.8125rem, $h: 3.8125rem);
+    }
+  }
+
+  &__title {
+    font-size: 2.75rem;
+    @extend .titleGradient;
+
+    @include media(desktop) {
+      font-size: 3.75rem;
+    }
+  }
+}
+
+.searchBarWrapper {
+  @include flex($justify: center);
+
+  @include media(desktop) {
+    @include flex($justify: flex-end, $align: center);
   }
 }
 
 .searchBar {
-  display: flex;
-  justify-content: center;
+  @include flex($align: center);
+  width: 40%;
+  padding: 0.3125rem;
 
-  @include media(tablet) {
-    display: flex;
-    justify-content: flex-end;
-    margin-right: 3.125rem;
+  border-bottom: 0.0625rem solid black;
+  border-radius: 0.3125rem;
+
+  @include media(desktop) {
+    width: 30%;
   }
 
-  &__container {
-    display: flex;
-    border-bottom: 0.0625rem solid black;
-    margin-bottom: 1.875rem;
-    border-radius: 0.3125rem;
-    padding: 0.3125rem;
-    width: 60%;
+  &__input {
+    width: 100%;
+    background: none;
+    border: none;
+    outline: none;
 
-    @include media(tablet) {
-      width: auto;
-    }
+    font-size: 1.5rem;
+  }
 
-    &__input {
-      background: none;
-      border: none;
-      width: 100%;
-      outline: none;
-      @include media(tablet) {
-        width: auto;
-      }
-    }
-
-    &__image {
-      width: 1.25rem;
-      height: 1.25rem;
-    }
+  &__image {
+    @include image($w: 1.25rem, $h: 1.25rem);
   }
 }
 
-.imagePokeball {
-  height: 0.125rem;
-  width: 0.125rem;
+.gridLayout {
+  display: grid;
+  row-gap: 1.25rem;
+  column-gap: 4.25rem;
+  grid-template-columns: repeat(auto-fill, 9.375rem);
+  justify-content: center;
+  place-items: center;
+}
+
+.cardShadow {
+  border: 10px solid white;
+  border-radius: 20px;
+  box-shadow: 0rem 0rem 0.3125rem 0.3125rem rgb(213, 211, 211);
+  background: linear-gradient(
+    180deg,
+    rgb(255, 250, 235) 0%,
+    rgb(255, 255, 255) 100%
+  );
+
+  &:hover {
+    background: linear-gradient(
+      180deg,
+      rgb(250, 235, 200) 0%,
+      rgb(255, 255, 255) 100%
+    );
+  }
+}
+
+.card {
+  @include flex(
+    $direction: column,
+    $align: center,
+    $justify: center,
+    $gap: 1.5rem
+  );
+  width: 12.5rem;
+  height: 18.75rem;
+  @extend .cardShadow;
+
+  font-size: 0.875rem;
+  font-weight: 800;
+  padding: 0.3125rem 0;
+  color: $smoother-black;
+  cursor: pointer;
+
+  &__image {
+    @include image($w: 9.25rem, $h: 9.25rem);
+  }
+
+  &__name {
+    text-transform: capitalize;
+  }
 }
