@@ -4,8 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import styles from "./HomePage.module.scss";
-import ImageErrorUrl from "../../../public/images/image-not-found.svg";
-import imagePokeball from "../../../public/images/pokeball.png";
+import pokeball from "../../../public/images/pokeball.svg";
 import imageSearch from "../../../public/images/searchimg.svg";
 
 import { PokeAPI, SearchBarProps, CardProps } from "../../helpers/types";
@@ -14,9 +13,9 @@ const Header = () => {
   return (
     <div className={styles.pokedexTitle}>
       <div className={styles.pokedexTitle__image}>
-        <Image src={imagePokeball} alt="pokeball-image" loading="lazy" />
+        <Image src={pokeball} alt="pokeball-image" loading="lazy" />
       </div>
-      <div>Pokédex</div>
+      <p>Pokédex</p>
     </div>
   );
 };
@@ -54,13 +53,13 @@ const Card = (props: CardProps) => {
         <div className={styles.singleItem__id}>#{id}</div>
         <div className={styles.singleItem__image}>
           <Image
-            src={parseInt(id) < 808 ? imageUrl : ImageErrorUrl}
+            src={parseInt(id) < 808 ? imageUrl : pokeball}
             alt={name}
             loading="lazy"
             layout="fill"
           />
         </div>
-        <div className={styles.singleItem__name}>{name}</div>
+        <p className={styles.singleItem__name}>{name}</p>
       </div>
     </Link>
   );
