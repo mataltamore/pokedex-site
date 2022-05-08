@@ -14,6 +14,7 @@ import {
   DetailPagePropsType,
   DetailType,
   RomanNumbersType,
+  ArrayChildrenProp,
 } from "../../helpers/types";
 
 import {
@@ -29,23 +30,24 @@ const NavBar = (props: { color: ColorMapping; name: string; id: number }) => {
   const { color, name, id } = props;
 
   return (
-    <div className={styles.navBar} style={{ backgroundColor: color }}>
-      <span className={styles.navBar__backHomepage}>
-        <Link href="/" passHref>
-          <div>
-            <Image
-              src={ArrowBackIcon}
-              alt="back arrow"
-              width={24}
-              height={24}
-            />
-          </div>
-        </Link>
+    <nav className={styles.navbar} style={{ backgroundColor: color }}>
+      <Link href="/" passHref>
+        <div className={styles.navbar__backbutton}>
+          <Image src={ArrowBackIcon} alt="back arrow" layout="fill" />
+        </div>
+      </Link>
+      <h1 className={styles.navbar__name}>{name}</h1>
+      <span className={styles.navbar__number}>
+        <p>Number</p>
+        {id}
       </span>
-      <span className={styles.navBar__currentPokemonName}>{name}</span>
-      <span className={styles.navBar__currentPokemonNumber}>Number {id}</span>
-    </div>
+    </nav>
   );
+};
+
+const Main = (props: ArrayChildrenProp) => {
+  const { children } = props;
+  return <div className={styles.defaultLayout}>{children}</div>;
 };
 
 const PrimaryInformation = (props: {
@@ -212,20 +214,18 @@ const PokemonDetail = (props: { color: ColorMapping; detail: DetailType }) => {
   ];
 
   return (
-    <>
+    <div className={styles.specie}>
       <p className={styles.specieTitle} style={{ color: color }}>
         Species Data
       </p>
-      <div className={styles.specie}>
-        {ContentSpecies.species.map(
-          (current: { id: number; name: string; info: string }, i: number) => {
-            const { id, name, info } = current;
-            const items = valueSpecies[i];
-            return <Card key={id} {...{ color, name, info, items }} />;
-          }
-        )}
-      </div>
-    </>
+      {ContentSpecies.species.map(
+        (current: { id: number; name: string; info: string }, i: number) => {
+          const { id, name, info } = current;
+          const items = valueSpecies[i];
+          return <Card key={id} {...{ color, name, info, items }} />;
+        }
+      )}
+    </div>
   );
 };
 
@@ -332,26 +332,28 @@ const DetailPage: NextPage<DetailPagePropsType> = (props) => {
   return (
     <>
       <NavBar color={color} name={data.name} id={data.id} />
-      <PrimaryInformation
-        color={color}
-        types={data.types}
-        abilities={data.abilities}
-        weight={data.weight}
-        height={data.height}
-        id={data.id}
-        sprite={data.sprites.other["official-artwork"].front_default}
-        description={
-          !detail.flavor_text_entries[gameNumb].flavor_text
-            ? detail.flavor_text_entries[0].flavor_text
-            : detail.flavor_text_entries[gameNumb].flavor_text
-        }
-      />
-      <PokemonEvolution
-        color={color}
-        name={data.name}
-        image={data.sprites.other["official-artwork"].front_default}
-      />
-      <PokemonDetail {...{ color, detail }} />
+      <Main>
+        <PrimaryInformation
+          color={color}
+          types={data.types}
+          abilities={data.abilities}
+          weight={data.weight}
+          height={data.height}
+          id={data.id}
+          sprite={data.sprites.other["official-artwork"].front_default}
+          description={
+            !detail.flavor_text_entries[gameNumb].flavor_text
+              ? detail.flavor_text_entries[0].flavor_text
+              : detail.flavor_text_entries[gameNumb].flavor_text
+          }
+        />
+        <PokemonEvolution
+          color={color}
+          name={data.name}
+          image={data.sprites.other["official-artwork"].front_default}
+        />
+        <PokemonDetail {...{ color, detail }} />
+      </Main>
       <Footer
         color={color}
         gamesName={gamesName.games}
