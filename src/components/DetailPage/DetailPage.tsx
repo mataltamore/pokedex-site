@@ -62,11 +62,16 @@ const PrimaryInformation = (props: {
 }) => {
   const { color, types, abilities, weight, height, id, sprite, description } =
     props;
+  const weightConverted = (weight * 0.1).toFixed(1);
+  const heightConverted = (height * 0.1).toFixed(1);
+  const weightUnit = "kg";
+  const heightUnit = "m";
+
   return (
-    <div className={styles.baseInfo}>
-      <div className={styles.baseInfo__grid}>
-        <div className={styles.baseInfo__grid__column}>
-          <div className={styles.typeAbilityBox}>
+    <div className={styles.mainContentWrapper}>
+      <div className={styles.basicInformation}>
+        <div className={styles.column}>
+          <div className={styles.column__abilities}>
             <p>Type</p>
             <p>Ability</p>
           </div>
@@ -75,19 +80,23 @@ const PrimaryInformation = (props: {
             <PokemonAbility color={color} abilities={abilities} />
           </div>
         </div>
-        <div className={styles.baseInfo__grid__column}>
-          <div className={styles.weightHeightBox}>
+        <div className={styles.column}>
+          <div className={styles.column__size}>
             <p>Weight</p>
             <p>Height</p>
           </div>
-          <div className={styles.weightHeightVarBox}>
-            <p>{(weight * 0.1).toFixed(1)} kg</p>
-            <p>{(height * 0.1).toFixed(1)} m</p>
+          <div className={styles.column__sizeData}>
+            <p>
+              {weightConverted} {weightUnit}
+            </p>
+            <p>
+              {heightConverted} {heightUnit}
+            </p>
           </div>
         </div>
       </div>
-      <div className={styles.baseInfo__description}>
-        <div className={styles.baseInfo__description__image}>
+      <div className={styles.mainImage}>
+        <div className={styles.titleImage}>
           <Image
             src={id < 808 ? sprite : PokeBallIcon}
             alt="official-artwork"
@@ -95,14 +104,9 @@ const PrimaryInformation = (props: {
             layout="fill"
           />
         </div>
-
-        <div className={styles.baseInfo__description__container}>
-          <p className={styles.baseInfo__description__container__title}>
-            Description
-          </p>
-          <p className={styles.baseInfo__description__container__text}>
-            {description}
-          </p>
+        <div className={styles.descriptionWrapper}>
+          <p className={styles.descriptionWrapper__title}>Description</p>
+          <p className={styles.descriptionWrapper__body}>{description}</p>
         </div>
       </div>
     </div>
@@ -112,17 +116,17 @@ const PrimaryInformation = (props: {
 const PokemonType = (props: { types: Array<TypesType> }) => {
   const { types } = props;
   return (
-    <div className={styles.typeVarBox}>
+    <div className={styles.typesWrapper}>
       {types.map((type: TypesType) => {
         return (
           <div
             key={type.type.name}
-            className={styles.typeVarBox__each}
+            className={styles.typeLabel}
             style={{
               backgroundColor: ColorMapping[type.type.name],
             }}
           >
-            <div className={styles.typeVarBox__each__image}>
+            <div className={styles.typeLabel__image}>
               <Image
                 src={IconMapping[type.type.name]}
                 alt="icon-type"
@@ -144,12 +148,12 @@ const PokemonAbility = (props: {
 }) => {
   const { color, abilities } = props;
   return (
-    <div className={styles.abilityVarBox}>
+    <div className={styles.abilitiesWrapper}>
       {abilities.map((ability: AbilitiesType) => {
         return (
           <span
             key={ability.ability.name}
-            className={styles.abilityVarBox__each}
+            className={styles.abilityLabel}
             style={{ backgroundColor: color }}
           >
             {ability.ability.name}
@@ -167,13 +171,13 @@ const PokemonEvolution = (props: {
 }) => {
   const { color, name, image } = props;
   return (
-    <div className={styles.evolutions}>
-      <p className={styles.evolutions__title} style={{ color: color }}>
+    <section className={styles.evolutionsWrapper}>
+      <h2 className={styles.evolutionsWrapper__title} style={{ color: color }}>
         Evolution Chain
-      </p>
+      </h2>
       <div>
-        <div className={styles.evolutions__card}>
-          <div className={styles.evolutions__card__image}>
+        <div className={styles.evolutionCard}>
+          <div className={styles.evolutionCard__image}>
             <Image
               src={image}
               alt="search-image"
@@ -182,14 +186,14 @@ const PokemonEvolution = (props: {
             />
           </div>
           <p
-            className={styles.evolutions__card__name}
+            className={styles.evolutionCard__name}
             style={{ backgroundColor: color }}
           >
             {name}
           </p>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
@@ -214,18 +218,20 @@ const PokemonDetail = (props: { color: ColorMapping; detail: DetailType }) => {
   ];
 
   return (
-    <div className={styles.specie}>
-      <p className={styles.specieTitle} style={{ color: color }}>
+    <section className={styles.detailWrapper}>
+      <h2 className={styles.detailWrapper__title} style={{ color: color }}>
         Species Data
-      </p>
-      {ContentSpecies.species.map(
-        (current: { id: number; name: string; info: string }, i: number) => {
-          const { id, name, info } = current;
-          const items = valueSpecies[i];
-          return <Card key={id} {...{ color, name, info, items }} />;
-        }
-      )}
-    </div>
+      </h2>
+      <div className={styles.detailWrapper__body}>
+        {ContentSpecies.species.map(
+          (current: { id: number; name: string; info: string }, i: number) => {
+            const { id, name, info } = current;
+            const items = valueSpecies[i];
+            return <Card key={id} {...{ color, name, info, items }} />;
+          }
+        )}
+      </div>
+    </section>
   );
 };
 
@@ -237,10 +243,10 @@ const Card = (props: {
 }) => {
   const { color, name, info, items } = props;
   return (
-    <div className={styles.specie__card}>
-      <p className={styles.specie__card__name}>{name}</p>
-      <p className={styles.specie__card__info}>{info}</p>
-      <p className={styles.specie__card__value} style={{ color: color }}>
+    <div className={styles.detailCard}>
+      <p className={styles.detailCard__name}>{name}</p>
+      <p className={styles.detailCard__info}>{info}</p>
+      <p className={styles.detailCard__value} style={{ color: color }}>
         {items.map((item) => {
           return item.concat(" ");
         })}
@@ -252,81 +258,35 @@ const Card = (props: {
 const Footer = (props: {
   color: ColorMapping;
   gamesName: Array<{ id: string; name: string; entryNum: number }>;
-  setGameNumb: React.Dispatch<React.SetStateAction<number>>;
 }) => {
-  const { color, gamesName, setGameNumb } = props;
+  const { color } = props;
 
-  const [game, setGame] = useState("Pokemon Shield");
-  const [showMenu, setShowMenu] = useState(false);
+  const scrollOptions: ScrollToOptions = {
+    top: 0,
+    left: 0,
+    behavior: "smooth",
+  };
 
   return (
-    <div className={styles.footer}>
-      <div className={styles.footer__btns}>
+    <footer className={styles.footer}>
+      <div className={styles.scroll}>
         <button
-          className={styles.footer__btns__topBtn}
+          type="button"
+          className={styles.scroll__btn}
           style={{ backgroundColor: color }}
-          onClick={() =>
-            window &&
-            window.scrollTo({
-              top: 0,
-              left: 0,
-              behavior: "smooth",
-            })
-          }
+          onClick={() => window && window.scrollTo(scrollOptions)}
         >
-          <Image src={ArrowUpIcon} alt="go up" width={24} height={24} />
+          <div className={styles.scroll__image}>
+            <Image src={ArrowUpIcon} alt="go up" layout="fill" />
+          </div>
         </button>
       </div>
-
-      <div
-        className={styles.footer__changeGame}
-        style={{ backgroundColor: color }}
-      >
-        <GameMenu game={game} showMenu={showMenu} setShowMenu={setShowMenu}>
-          <ul
-            className={styles.footer__changeGame__list}
-            style={{ backgroundColor: color }}
-          >
-            {gamesName.map((gameName) => {
-              return (
-                <li
-                  key={gameName.id}
-                  onClick={() => {
-                    setGame(gameName.name);
-                    setShowMenu(!showMenu);
-                    setGameNumb(gameName.entryNum);
-                  }}
-                >
-                  {gameName.name}
-                </li>
-              );
-            })}
-          </ul>
-        </GameMenu>
-      </div>
-    </div>
-  );
-};
-
-const GameMenu = (props: {
-  game: string;
-  showMenu: boolean;
-  setShowMenu: React.Dispatch<React.SetStateAction<boolean>>;
-  children: JSX.Element;
-}) => {
-  const { game, showMenu, setShowMenu, children } = props;
-
-  return (
-    <div onClick={() => setShowMenu(!showMenu)}>
-      Select Game: {game}
-      {showMenu && children}
-    </div>
+    </footer>
   );
 };
 
 const DetailPage: NextPage<DetailPagePropsType> = (props) => {
   const { data, detail } = props;
-  const [gameNumb, setGameNumb] = useState(91);
   const color = ColorMapping[data.types[0].type.name];
 
   return (
@@ -342,9 +302,9 @@ const DetailPage: NextPage<DetailPagePropsType> = (props) => {
           id={data.id}
           sprite={data.sprites.other["official-artwork"].front_default}
           description={
-            !detail.flavor_text_entries[gameNumb].flavor_text
-              ? detail.flavor_text_entries[0].flavor_text
-              : detail.flavor_text_entries[gameNumb].flavor_text
+            !detail.flavor_text_entries[0]?.flavor_text
+              ? detail.flavor_text_entries[0]?.flavor_text
+              : detail.flavor_text_entries[0]?.flavor_text
           }
         />
         <PokemonEvolution
@@ -354,11 +314,7 @@ const DetailPage: NextPage<DetailPagePropsType> = (props) => {
         />
         <PokemonDetail {...{ color, detail }} />
       </Main>
-      <Footer
-        color={color}
-        gamesName={gamesName.games}
-        setGameNumb={setGameNumb}
-      />
+      <Footer color={color} gamesName={gamesName.games} />
     </>
   );
 };
