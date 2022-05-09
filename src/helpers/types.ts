@@ -1,3 +1,5 @@
+import { ColorMapping } from "./utils";
+
 // HomePage Props
 
 export type PokeAPI = { name: string; url: string };
@@ -48,6 +50,43 @@ export type DetailType = {
   is_mythical: boolean;
   pokedex_numbers: PokedexNumbersType[];
   shape: ShapeType;
+};
+
+export type NavBarProps = { color: ColorMapping; name: string; id: number };
+
+export type PrimaryInformationProps = {
+  color: ColorMapping;
+  types: Array<TypesType>;
+  abilities: Array<AbilitiesType>;
+  weight: number;
+  height: number;
+  id: number;
+  sprite: string;
+  description: string;
+};
+
+export type PokemonAbilityProps = {
+  color: ColorMapping;
+  abilities: Array<AbilitiesType>;
+};
+
+export type PokemonEvolutionProps = {
+  color: ColorMapping;
+  name: string;
+  image: string;
+};
+
+export type PokemonDetailProps = { color: ColorMapping; detail: DetailType };
+
+export type CardDetailProps = {
+  color: ColorMapping;
+  name: string;
+  info: string;
+  items: Array<string>;
+};
+export type FooterDetailProps = {
+  color: ColorMapping;
+  STATIC_CONTENT: Array<{ id: string; name: string; entryNum: number }>;
 };
 
 export type AbilitiesType = {

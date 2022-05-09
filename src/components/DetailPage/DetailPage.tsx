@@ -12,9 +12,15 @@ import {
   TypesType,
   AbilitiesType,
   DetailPagePropsType,
-  DetailType,
   RomanNumbersType,
   ArrayChildrenProp,
+  NavBarProps,
+  PrimaryInformationProps,
+  PokemonAbilityProps,
+  PokemonEvolutionProps,
+  PokemonDetailProps,
+  CardDetailProps,
+  FooterDetailProps,
 } from "../../helpers/types";
 
 import {
@@ -25,7 +31,7 @@ import {
 
 import STATIC_CONTENT from "../../../public/api/detail-page.json";
 
-const NavBar = (props: { color: ColorMapping; name: string; id: number }) => {
+const NavBar = (props: NavBarProps) => {
   const { color, name, id } = props;
 
   return (
@@ -49,16 +55,7 @@ const Main = (props: ArrayChildrenProp) => {
   return <div className={styles.defaultLayout}>{children}</div>;
 };
 
-const PrimaryInformation = (props: {
-  color: ColorMapping;
-  types: Array<TypesType>;
-  abilities: Array<AbilitiesType>;
-  weight: number;
-  height: number;
-  id: number;
-  sprite: string;
-  description: string;
-}) => {
+const PrimaryInformation = (props: PrimaryInformationProps) => {
   const { color, types, abilities, weight, height, id, sprite, description } =
     props;
   const weightConverted = (weight * 0.1).toFixed(1);
@@ -141,10 +138,7 @@ const PokemonType = (props: { types: Array<TypesType> }) => {
   );
 };
 
-const PokemonAbility = (props: {
-  color: ColorMapping;
-  abilities: Array<AbilitiesType>;
-}) => {
+const PokemonAbility = (props: PokemonAbilityProps) => {
   const { color, abilities } = props;
   return (
     <div className={styles.abilitiesWrapper}>
@@ -163,11 +157,7 @@ const PokemonAbility = (props: {
   );
 };
 
-const PokemonEvolution = (props: {
-  color: ColorMapping;
-  name: string;
-  image: string;
-}) => {
+const PokemonEvolution = (props: PokemonEvolutionProps) => {
   const { color, name, image } = props;
   return (
     <section className={styles.evolutionsWrapper}>
@@ -196,7 +186,7 @@ const PokemonEvolution = (props: {
   );
 };
 
-const PokemonDetail = (props: { color: ColorMapping; detail: DetailType }) => {
+const PokemonDetail = (props: PokemonDetailProps) => {
   const { color, detail } = props;
 
   const romanNumber: RomanNumbersType = detail.generation.name
@@ -234,12 +224,7 @@ const PokemonDetail = (props: { color: ColorMapping; detail: DetailType }) => {
   );
 };
 
-const Card = (props: {
-  color: ColorMapping;
-  name: string;
-  info: string;
-  items: Array<string>;
-}) => {
+const Card = (props: CardDetailProps) => {
   const { color, name, info, items } = props;
   return (
     <div className={styles.detailCard}>
@@ -254,10 +239,7 @@ const Card = (props: {
   );
 };
 
-const Footer = (props: {
-  color: ColorMapping;
-  STATIC_CONTENT: Array<{ id: string; name: string; entryNum: number }>;
-}) => {
+const Footer = (props: FooterDetailProps) => {
   const { color } = props;
 
   const scrollOptions: ScrollToOptions = {
