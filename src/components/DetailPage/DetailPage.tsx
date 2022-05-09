@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { NextPage } from "next/types";
 import Image from "next/image";
 import Link from "next/link";
@@ -23,8 +23,7 @@ import {
   RomanLetterMapping,
 } from "../../helpers/utils";
 
-import gamesName from "../../../public/api/games-name.json";
-import ContentSpecies from "../../../public/api/content-species.json";
+import STATIC_CONTENT from "../../../public/api/detail-page.json";
 
 const NavBar = (props: { color: ColorMapping; name: string; id: number }) => {
   const { color, name, id } = props;
@@ -223,11 +222,11 @@ const PokemonDetail = (props: { color: ColorMapping; detail: DetailType }) => {
         Species Data
       </h2>
       <div className={styles.detailWrapper__body}>
-        {ContentSpecies.species.map(
-          (current: { id: number; name: string; info: string }, i: number) => {
-            const { id, name, info } = current;
+        {STATIC_CONTENT.details.map(
+          (current: { name: string; info: string }, i: number) => {
+            const { name, info } = current;
             const items = valueSpecies[i];
-            return <Card key={id} {...{ color, name, info, items }} />;
+            return <Card key={name} {...{ color, name, info, items }} />;
           }
         )}
       </div>
@@ -257,7 +256,7 @@ const Card = (props: {
 
 const Footer = (props: {
   color: ColorMapping;
-  gamesName: Array<{ id: string; name: string; entryNum: number }>;
+  STATIC_CONTENT: Array<{ id: string; name: string; entryNum: number }>;
 }) => {
   const { color } = props;
 
@@ -314,7 +313,7 @@ const DetailPage: NextPage<DetailPagePropsType> = (props) => {
         />
         <PokemonDetail {...{ color, detail }} />
       </Main>
-      <Footer color={color} gamesName={gamesName.games} />
+      <Footer color={color} STATIC_CONTENT={STATIC_CONTENT.games} />
     </>
   );
 };

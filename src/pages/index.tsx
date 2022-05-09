@@ -4,20 +4,20 @@ import { NextPage } from "next/types";
 import Head from "next/head";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 
-import PokemonSpeciesAPI from "../../public/api/pokemon-species.json";
+import STATIC_POKEAPI from "../../public/api/pokemon-species.json";
 
 import HomePage from "../components/Homepage/Homepage";
 
 export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
-      PokemonSpeciesAPI,
+      STATIC_POKEAPI,
     },
   };
 };
 
 const Home: NextPage = ({
-  PokemonSpeciesAPI,
+  STATIC_POKEAPI,
 }: InferGetStaticPropsType<GetStaticProps>) => {
   return (
     <>
@@ -26,7 +26,7 @@ const Home: NextPage = ({
         <meta name="description" content="Pokemon fanmade site" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <HomePage data={PokemonSpeciesAPI} />
+      <HomePage data={STATIC_POKEAPI} />
     </>
   );
 };
