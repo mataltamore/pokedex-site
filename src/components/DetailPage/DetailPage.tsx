@@ -3,7 +3,6 @@ import { NextPage } from "next/types";
 import Image from "next/image";
 import Link from "next/link";
 
-import PokeBallIcon from "../../../public/images/pokeball.svg";
 import ArrowBackIcon from "../../../public/images/arrow-back-icon.svg";
 import ArrowUpIcon from "../../../public/images/arrow-up-icon.svg";
 import styles from "./DetailPage.module.scss";
@@ -29,7 +28,7 @@ import {
   RomanLetterMapping,
 } from "../../helpers/utils";
 
-import { SHIFT_UNIT, MAX_SRC_FOUND } from "../../helpers/imports";
+import { SHIFT_UNIT } from "../../helpers/imports";
 
 import STATIC_CONTENT from "../../../public/api/detail-page.json";
 
@@ -58,7 +57,7 @@ const Main = (props: ArrayChildrenProp) => {
 };
 
 const PrimaryInformation = (props: PrimaryInformationProps) => {
-  const { color, types, abilities, weight, height, id, sprite, description } =
+  const { color, types, abilities, weight, height, sprite, description } =
     props;
   const weightConverted = (weight * SHIFT_UNIT).toFixed(1);
   const heightConverted = (height * SHIFT_UNIT).toFixed(1);
@@ -90,7 +89,7 @@ const PrimaryInformation = (props: PrimaryInformationProps) => {
       <div className={styles.mainImage}>
         <div className={styles.titleImage}>
           <Image
-            src={id < MAX_SRC_FOUND ? sprite : PokeBallIcon}
+            src={sprite}
             alt="official-artwork"
             loading="lazy"
             layout="fill"

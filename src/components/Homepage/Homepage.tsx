@@ -11,10 +11,7 @@ import {
   ArrayChildrenProp,
   PokeAPI,
   SearchBarProps,
-  CardProps,
 } from "../../helpers/types";
-
-import { MAX_SRC_FOUND } from "../../helpers/imports";
 
 const Header = () => {
   return (
@@ -69,22 +66,6 @@ const SearchBar = (props: SearchBarProps) => {
 const GridCards = (props: { pokemons: Array<PokeAPI> }) => {
   const { pokemons } = props;
   const [isLoaded, setIsLoaded] = useState(false);
-  const INDEX_ID = 6;
-  const INDEX_PAD = 3;
-  let pokemonId: string, paddedPokemonId: string, imageUrl: string;
-
-  function extractIdFromUrl(url: string) {
-    pokemonId = url.split("/")[INDEX_ID];
-    paddedPokemonId = pokemonId.padStart(INDEX_PAD, "0");
-
-    return [pokemonId, paddedPokemonId];
-  }
-
-  function getImageById(id: string, compressed: boolean = false) {
-    return compressed
-      ? `https://raw.githubusercontent.com/HybridShivam/Pokemon/master/assets/thumbnails-compressed/${id}.png`
-      : `https://raw.githubusercontent.com/HybridShivam/Pokemon/master/assets/images/${id}.png`;
-  }
 
   useEffect(() => {
     if (pokemons.length) setIsLoaded(true);
@@ -98,24 +79,14 @@ const GridCards = (props: { pokemons: Array<PokeAPI> }) => {
   return (
     <div className={styles.gridLayout}>
       {pokemons.map((pokemon: PokeAPI) => {
-        [pokemonId, paddedPokemonId] = extractIdFromUrl(pokemon.url);
-        imageUrl = getImageById(paddedPokemonId, true);
-
-        return (
-          <Card
-            key={pokemonId}
-            name={pokemon.name}
-            id={pokemonId}
-            imageUrl={imageUrl}
-          />
-        );
+        return <Card key={pokemon.id} {...pokemon} />;
       })}
     </div>
   );
 };
 
-const Card = (props: CardProps) => {
-  const { name, id, imageUrl } = props;
+const Card = (props: PokeAPI) => {
+  const { id, name, types, past_types: pastTypes, sprites } = props;
 
   return (
     <Link href={`/pokemon/${name}?id=${id}`} passHref>
@@ -126,7 +97,7 @@ const Card = (props: CardProps) => {
         </h2>
         <div className={styles.card__image}>
           <Image
-            src={parseInt(id) < MAX_SRC_FOUND ? imageUrl : PokeIcon}
+            src={sprites.official}
             alt={name}
             layout="fill"
             loading="lazy"
@@ -142,14 +113,14 @@ const HomePage = ({ data }: InferGetStaticPropsType<GetStaticProps>) => {
   const [pokemons, setPokemons] = useState<Array<PokeAPI>>([]);
 
   useEffect(() => {
-    if (data) setPokemons(() => [...data.results]);
+    if (data) setPokemons(() => [...data]);
   }, [data]);
 
   return (
     <>
       <Header />
       <Main>
-        <SearchBar data={data.results} setPokemons={setPokemons} />
+        <SearchBar data={data} setPokemons={setPokemons} />
         <GridCards pokemons={pokemons} />
       </Main>
     </>

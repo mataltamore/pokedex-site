@@ -2,8 +2,29 @@ import { ColorMapping } from "./utils";
 
 // HomePage Props
 
-export type PokeAPI = { name: string; url: string };
-export type CardProps = { name: string; id: string; imageUrl: string };
+export type PokeAPI = {
+  id: number;
+  name: string;
+  types: Array<{
+    slot: number;
+    type: {
+      name: string;
+      url: string;
+    };
+  }>;
+  past_types: Array<{
+    slot: number;
+    type: {
+      name: string;
+      url: string;
+    };
+  }>;
+  sprites: {
+    official: string;
+    dream_world: string;
+  };
+};
+
 export type SearchBarProps = {
   data: Array<PokeAPI>;
   setPokemons: React.Dispatch<React.SetStateAction<PokeAPI[]>>;

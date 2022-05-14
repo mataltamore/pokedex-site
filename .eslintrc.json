@@ -10,18 +10,18 @@
     "array-callback-return": "error",
     "no-duplicate-imports": "error",
     "no-unreachable-loop": "error",
-    "camelcase": "error",
+    "camelcase": "warn",
     "complexity": "error",
     "eqeqeq": "error",
     "max-depth": "error",
-    "no-console": "error",
-    "no-else-return": "error",
-    "no-nested-ternary": "error",
+    "no-console": "warn",
+    "no-else-return": "warn",
+    "no-nested-ternary": "warn",
     "no-plusplus": "error",
     "no-redeclare": "error",
     "no-var": "error",
     "prefer-const": "error",
-    "spaced-comment": "error",
+    "spaced-comment": "warn",
     "yoda": "error"
   }
 }
