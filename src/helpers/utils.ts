@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import NormalIcon from "../../public/images/pokemonTypes/normal.svg";
 import BugIcon from "../../public/images/pokemonTypes/bug.svg";
 import DarkIcon from "../../public/images/pokemonTypes/dark.svg";

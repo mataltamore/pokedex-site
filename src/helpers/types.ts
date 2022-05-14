@@ -199,7 +199,7 @@ export type EvolutionDetailsType = {
   min_happiness: number;
   min_level: number;
   needs_overworld_rain: boolean;
-  party_species: string; //not sure
+  party_species: string; // not sure
   party_type: string;
   relative_physical_stats: string;
   time_of_day: string;

@@ -14,6 +14,8 @@ import {
   CardProps,
 } from "../../helpers/types";
 
+import { MAX_SRC_FOUND } from "../../helpers/imports";
+
 const Header = () => {
   return (
     <header className={styles.header}>
@@ -61,10 +63,13 @@ const SearchBar = (props: SearchBarProps) => {
 const GridCards = (props: { pokemons: Array<PokeAPI> }) => {
   const { pokemons } = props;
 
+  const INDEX_ID = 6;
+  const INDEX_PAD = 3;
+
   let pokemonId: string, paddedPokemonId: string, imageUrl: string;
   function extractIdFromUrl(url: string) {
-    pokemonId = url.split("/")[6];
-    paddedPokemonId = pokemonId.padStart(3, "0");
+    pokemonId = url.split("/")[INDEX_ID];
+    paddedPokemonId = pokemonId.padStart(INDEX_PAD, "0");
 
     return [pokemonId, paddedPokemonId];
   }
@@ -77,7 +82,7 @@ const GridCards = (props: { pokemons: Array<PokeAPI> }) => {
 
   return (
     <>
-      {pokemons.length === 0 ? (
+      {!pokemons.length ? (
         <p style={{ marginInline: "auto" }}>Loading...</p>
       ) : (
         <div className={styles.gridLayout}>
@@ -112,7 +117,7 @@ const Card = (props: CardProps) => {
         </h2>
         <div className={styles.card__image}>
           <Image
-            src={parseInt(id) < 808 ? imageUrl : PokeIcon}
+            src={parseInt(id) < MAX_SRC_FOUND ? imageUrl : PokeIcon}
             alt={name}
             layout="fill"
             loading="lazy"

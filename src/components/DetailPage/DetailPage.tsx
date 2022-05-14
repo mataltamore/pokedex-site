@@ -9,18 +9,18 @@ import ArrowUpIcon from "../../../public/images/arrow-up-icon.svg";
 import styles from "./DetailPage.module.scss";
 
 import {
-  TypesType,
   AbilitiesType,
-  DetailPagePropsType,
-  RomanNumbersType,
   ArrayChildrenProp,
-  NavBarProps,
-  PrimaryInformationProps,
-  PokemonAbilityProps,
-  PokemonEvolutionProps,
-  PokemonDetailProps,
   CardDetailProps,
+  DetailPagePropsType,
   FooterDetailProps,
+  NavBarProps,
+  PokemonAbilityProps,
+  PokemonDetailProps,
+  PokemonEvolutionProps,
+  PrimaryInformationProps,
+  RomanNumbersType,
+  TypesType,
 } from "../../helpers/types";
 
 import {
@@ -28,6 +28,8 @@ import {
   IconMapping,
   RomanLetterMapping,
 } from "../../helpers/utils";
+
+import { SHIFT_UNIT, MAX_SRC_FOUND } from "../../helpers/imports";
 
 import STATIC_CONTENT from "../../../public/api/detail-page.json";
 
@@ -58,10 +60,8 @@ const Main = (props: ArrayChildrenProp) => {
 const PrimaryInformation = (props: PrimaryInformationProps) => {
   const { color, types, abilities, weight, height, id, sprite, description } =
     props;
-  const weightConverted = (weight * 0.1).toFixed(1);
-  const heightConverted = (height * 0.1).toFixed(1);
-  const weightUnit = "kg";
-  const heightUnit = "m";
+  const weightConverted = (weight * SHIFT_UNIT).toFixed(1);
+  const heightConverted = (height * SHIFT_UNIT).toFixed(1);
 
   return (
     <div className={styles.mainContentWrapper}>
@@ -82,19 +82,15 @@ const PrimaryInformation = (props: PrimaryInformationProps) => {
             <p>Height</p>
           </div>
           <div className={styles.column__sizeData}>
-            <p>
-              {weightConverted} {weightUnit}
-            </p>
-            <p>
-              {heightConverted} {heightUnit}
-            </p>
+            <p>{weightConverted} kg</p>
+            <p>{heightConverted} m</p>
           </div>
         </div>
       </div>
       <div className={styles.mainImage}>
         <div className={styles.titleImage}>
           <Image
-            src={id < 808 ? sprite : PokeBallIcon}
+            src={id < MAX_SRC_FOUND ? sprite : PokeBallIcon}
             alt="official-artwork"
             loading="lazy"
             layout="fill"
@@ -189,17 +185,16 @@ const PokemonEvolution = (props: PokemonEvolutionProps) => {
 const PokemonDetail = (props: PokemonDetailProps) => {
   const { color, detail } = props;
 
+  const INDEX_ROMAN_NUMBER = 11;
+
   const romanNumber: RomanNumbersType = detail.generation.name
-    .substring(11)
+    .substring(INDEX_ROMAN_NUMBER)
     .toUpperCase() as RomanNumbersType;
   const generationNumber: string = RomanLetterMapping[romanNumber];
 
   const valueSpecies = [
     [detail.base_happiness.toString()],
-    [
-      detail.egg_groups[0].name,
-      detail.egg_groups.length === 1 ? "" : detail.egg_groups[1].name,
-    ],
+    [detail.egg_groups[0].name, detail.egg_groups[0]?.name],
     [detail.habitat.name === "null" ? detail.habitat.name : "unknown"],
     [detail.shape.name],
     [generationNumber],

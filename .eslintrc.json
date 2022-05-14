@@ -1,3 +1,27 @@
+// https://eslint.org/docs/rules/
 {
-  "extends": "next/core-web-vitals"
+  "extends": ["next/core-web-vitals", "eslint:recommended"],
+  "globals": {
+    "React": true,
+    "JSX": true,
+    "ScrollToOptions": true
+  },
+  "rules": {
+    "array-callback-return": "error",
+    "no-duplicate-imports": "error",
+    "no-unreachable-loop": "error",
+    "camelcase": "error",
+    "complexity": "error",
+    "eqeqeq": "error",
+    "max-depth": "error",
+    "no-console": "error",
+    "no-else-return": "error",
+    "no-nested-ternary": "error",
+    "no-plusplus": "error",
+    "no-redeclare": "error",
+    "no-var": "error",
+    "prefer-const": "error",
+    "spaced-comment": "error",
+    "yoda": "error"
+  }
 }
