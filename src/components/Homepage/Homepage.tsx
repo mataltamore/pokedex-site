@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useDeferredValue } from "react";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -33,18 +33,24 @@ const Main = ({ children }: ArrayChildrenProp) => {
 
 const SearchBar = (props: SearchBarProps) => {
   const { data, setPokemons } = props;
+  const [search, setSearch] = useState("");
+  const deferredSearch = useDeferredValue(search);
+
+  useEffect(() => {
+    setPokemons(
+      data.filter((pokemon: PokeAPI) => pokemon.name.includes(deferredSearch))
+    );
+  }, [deferredSearch, setPokemons, data]);
+
   return (
     <div className={styles.searchBarWrapper}>
       <div className={styles.searchBar}>
         <input
           type="text"
+          placeholder="Search a name..."
           className={styles.searchBar__input}
           onChange={(e) => {
-            setPokemons(
-              data.filter((pokemon: PokeAPI) =>
-                pokemon.name.includes(e.target.value)
-              )
-            );
+            setSearch(e.target.value);
           }}
         />
         <div className={styles.searchBar__image}>
@@ -62,11 +68,11 @@ const SearchBar = (props: SearchBarProps) => {
 
 const GridCards = (props: { pokemons: Array<PokeAPI> }) => {
   const { pokemons } = props;
-
+  const [isLoaded, setIsLoaded] = useState(false);
   const INDEX_ID = 6;
   const INDEX_PAD = 3;
-
   let pokemonId: string, paddedPokemonId: string, imageUrl: string;
+
   function extractIdFromUrl(url: string) {
     pokemonId = url.split("/")[INDEX_ID];
     paddedPokemonId = pokemonId.padStart(INDEX_PAD, "0");
@@ -80,28 +86,31 @@ const GridCards = (props: { pokemons: Array<PokeAPI> }) => {
       : `https://raw.githubusercontent.com/HybridShivam/Pokemon/master/assets/images/${id}.png`;
   }
 
-  return (
-    <>
-      {!pokemons.length ? (
-        <p style={{ marginInline: "auto" }}>Loading...</p>
-      ) : (
-        <div className={styles.gridLayout}>
-          {pokemons.map((pokemon: PokeAPI) => {
-            [pokemonId, paddedPokemonId] = extractIdFromUrl(pokemon.url);
-            imageUrl = getImageById(paddedPokemonId, true);
+  useEffect(() => {
+    if (pokemons.length) setIsLoaded(true);
+  }, [pokemons]);
 
-            return (
-              <Card
-                key={pokemonId}
-                name={pokemon.name}
-                id={pokemonId}
-                imageUrl={imageUrl}
-              />
-            );
-          })}
-        </div>
-      )}
-    </>
+  if (!pokemons.length && !isLoaded)
+    return <p style={{ marginInline: "auto" }}>Loading...</p>;
+  if (!pokemons.length && isLoaded)
+    return <p style={{ marginInline: "auto" }}>No pokemons with such name</p>;
+
+  return (
+    <div className={styles.gridLayout}>
+      {pokemons.map((pokemon: PokeAPI) => {
+        [pokemonId, paddedPokemonId] = extractIdFromUrl(pokemon.url);
+        imageUrl = getImageById(paddedPokemonId, true);
+
+        return (
+          <Card
+            key={pokemonId}
+            name={pokemon.name}
+            id={pokemonId}
+            imageUrl={imageUrl}
+          />
+        );
+      })}
+    </div>
   );
 };
 
