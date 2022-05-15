@@ -194,7 +194,7 @@ const PokemonDetail = (props: PokemonDetailProps) => {
   const valueSpecies = [
     [detail.base_happiness.toString()],
     [detail.egg_groups[0].name, detail.egg_groups[0]?.name],
-    [detail.habitat.name === "null" ? detail.habitat.name : "unknown"],
+    [detail.habitat?.name || "unknown"],
     [detail.shape.name],
     [generationNumber],
     [detail.capture_rate.toString()],

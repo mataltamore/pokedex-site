@@ -124,6 +124,11 @@
   color: $smoother-black;
   cursor: pointer;
 
+  &__number {
+    align-self: flex-start;
+    padding-left: 5%;
+  }
+
   &__image {
     @include image($w: 8.25rem, $h: 7.25rem);
   }

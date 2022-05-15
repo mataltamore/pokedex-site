@@ -93,7 +93,7 @@ const Card = (props: PokeAPI) => {
   return (
     <Link href={`/pokemon/${name}?id=${id}`} passHref>
       <article className={styles.card}>
-        <h2>
+        <h2 className={styles.card__number}>
           <span style={{ fontSize: "0.875rem" }}>#</span>
           {id}
         </h2>
