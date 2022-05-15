@@ -125,10 +125,24 @@
   cursor: pointer;
 
   &__image {
-    @include image($w: 9.25rem, $h: 9.25rem);
+    @include image($w: 8.25rem, $h: 7.25rem);
   }
 
   &__name {
     text-transform: capitalize;
+  }
+
+  &__types {
+    @include flex($gap: 10px);
+
+    font-weight: 500;
+    color: white;
+    text-transform: capitalize;
+    padding-bottom: 0.5rem;
+
+    & > span {
+      padding: 0.2rem 0.5rem;
+      border-radius: 10px;
+    }
   }
 }

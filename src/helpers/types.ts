@@ -5,20 +5,8 @@ import { ColorMapping } from "./utils";
 export type PokeAPI = {
   id: number;
   name: string;
-  types: Array<{
-    slot: number;
-    type: {
-      name: string;
-      url: string;
-    };
-  }>;
-  past_types: Array<{
-    slot: number;
-    type: {
-      name: string;
-      url: string;
-    };
-  }>;
+  types: Array<TypesType>;
+  past_types: Array<PastTypesType>;
   sprites: {
     official: string;
     dream_world: string;
@@ -173,6 +161,14 @@ export type StatTypes = {
   stat: {
     name: string;
   };
+};
+
+export type PastTypesType = {
+  generation: {
+    name: string;
+    url: string;
+  };
+  types: Array<TypesType>;
 };
 
 export type TypesType = {

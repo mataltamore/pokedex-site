@@ -11,7 +11,9 @@ import {
   ArrayChildrenProp,
   PokeAPI,
   SearchBarProps,
+  TypesType,
 } from "../../helpers/types";
+import { ColorMapping } from "../../helpers/utils";
 
 const Header = () => {
   return (
@@ -104,6 +106,32 @@ const Card = (props: PokeAPI) => {
           />
         </div>
         <h2 className={styles.card__name}>{name}</h2>
+        <div className={styles.card__types}>
+          {types.map((item: TypesType) => {
+            return (
+              <span
+                key={item.type.name}
+                style={{ backgroundColor: ColorMapping[item.type.name] }}
+              >
+                {item.type.name}
+              </span>
+            );
+          })}
+        </div>
+        {pastTypes.length > 0 && (
+          <div className={styles.card__types}>
+            {pastTypes[0].types.map((item: TypesType) => {
+              return (
+                <span
+                  key={item.type.name}
+                  style={{ backgroundColor: ColorMapping[item.type.name] }}
+                >
+                  {item.type.name}
+                </span>
+              );
+            })}
+          </div>
+        )}
       </article>
     </Link>
   );
