@@ -4,7 +4,7 @@ import { NextPage } from "next/types";
 import Head from "next/head";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 
-import DetailPage from "../../components/DetailPage/DetailPage";
+import DetailPage from "../../components/pages/DetailPage/DetailPage";
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { id, name } = query;
