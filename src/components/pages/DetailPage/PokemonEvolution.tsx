@@ -3,10 +3,8 @@ import Image from "next/image";
 
 import styles from "./DetailPage.module.scss";
 
-import { ColorMapping } from "../../../globals/utils";
-
 export type PokemonEvolutionProps = {
-  color: ColorMapping;
+  color: string;
   name: string;
   image: string;
 };

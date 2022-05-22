@@ -53,6 +53,7 @@ const DetailPage: NextPage<DetailPageProps> = (props) => {
   const { types, abilities, weight, height, id, name } = data;
 
   const color = PokemonTypeMapping[data.types[0].type.name].color;
+  const secondColor = PokemonTypeMapping[data.types[1]?.type.name].color;
   const PrimaryInformationProps = {
     color,
     types,
@@ -73,7 +74,12 @@ const DetailPage: NextPage<DetailPageProps> = (props) => {
 
   return (
     <>
-      <NavBar color={color} name={data.name} id={data.id} />
+      <NavBar
+        color={color}
+        secondColor={secondColor}
+        name={data.name}
+        id={data.id}
+      />
       <div className={styles.defaultLayout}>
         <PrimaryInformation {...PrimaryInformationProps} />
         <PokemonEvolution {...PokemonEvolutionProps} />

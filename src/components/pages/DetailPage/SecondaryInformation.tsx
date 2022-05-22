@@ -2,15 +2,15 @@ import React from "react";
 
 import styles from "./DetailPage.module.scss";
 
-import { ColorMapping, RomanLetterMapping } from "../../../globals/utils";
+import { RomanLetterMapping } from "../../../globals/utils";
 import { PokeSpecieAPI } from "../../../globals/types";
 
 import STATIC_CONTENT from "../../../../public/api/detail-page.json";
 
-type SecondaryInformationProps = { color: ColorMapping; detail: PokeSpecieAPI };
+type SecondaryInformationProps = { color: string; detail: PokeSpecieAPI };
 
 type CardDetailProps = {
-  color: ColorMapping;
+  color: string;
   name: string;
   info: string;
   items: Array<string>;

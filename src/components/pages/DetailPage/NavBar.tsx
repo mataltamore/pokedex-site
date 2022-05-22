@@ -4,17 +4,26 @@ import Image from "next/image";
 
 import ArrowBackIcon from "/public/images/arrow-back-icon.svg";
 
-import { ColorMapping } from "../../../globals/utils";
-
 import styles from "./DetailPage.module.scss";
 
-type NavBarProps = { color: ColorMapping; name: string; id: number };
+type NavBarProps = {
+  color: string;
+  secondColor: string;
+  name: string;
+  id: number;
+};
 
 const NavBar = (props: NavBarProps) => {
-  const { color, name, id } = props;
+  const { color, secondColor, name, id } = props;
 
   return (
-    <nav className={styles.navbar} style={{ backgroundColor: color }}>
+    <nav
+      className={styles.navbar}
+      style={{
+        backgroundColor: color,
+        background: `linear-gradient(72deg, ${color} 35%, ${secondColor} 65%)`,
+      }}
+    >
       <Link href="/" passHref>
         <div className={styles.navbar__backbutton}>
           <Image src={ArrowBackIcon} alt="back arrow" layout="fill" />
