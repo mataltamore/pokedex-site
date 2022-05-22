@@ -4,9 +4,9 @@ import { NextPage } from "next/types";
 import Head from "next/head";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 
-import STATIC_POKEAPI from "../../public/api/pokemon-species.json";
+import STATIC_POKEAPI from "../../public/api/static_pokeapi.json";
 
-import HomePage from "../components/Homepage/Homepage";
+import HomePage from "../components/pages/Homepage/Homepage";
 
 export const getStaticProps: GetStaticProps = async () => {
   return {
