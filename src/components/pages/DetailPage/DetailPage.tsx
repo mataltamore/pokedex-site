@@ -53,7 +53,7 @@ const DetailPage: NextPage<DetailPageProps> = (props) => {
   const { types, abilities, weight, height, id, name } = data;
 
   const color = PokemonTypeMapping[data.types[0].type.name].color;
-  const secondColor = PokemonTypeMapping[data.types[1]?.type.name].color;
+  const secondColor = PokemonTypeMapping[data.types[1]?.type.name]?.color;
   const PrimaryInformationProps = {
     color,
     types,

@@ -3,7 +3,7 @@ import { StaticPokeAPI } from "../../../globals/types";
 
 import Card from "../../helpers/Card/Card";
 
-import styles from "./HomePage.module.scss";
+import styles from "./Homepage.module.scss";
 
 const GridCards = (props: { pokemons: Array<StaticPokeAPI> }) => {
   const { pokemons } = props;

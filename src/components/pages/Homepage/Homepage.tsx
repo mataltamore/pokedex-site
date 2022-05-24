@@ -7,7 +7,7 @@ import PokeIcon from "/public/images/pokeball.svg";
 import SearchBar from "./SearchBar";
 import GridCards from "./GridCards";
 
-import styles from "./HomePage.module.scss";
+import styles from "./Homepage.module.scss";
 import { StaticPokeAPI } from "../../../globals/types";
 
 const Header = () => {
