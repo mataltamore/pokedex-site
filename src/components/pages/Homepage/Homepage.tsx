@@ -2,16 +2,20 @@ import React, { useEffect, useState } from "react";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 import Image from "next/image";
 
+import { GenerationNumber, StaticPokeAPI } from "../../../globals/types";
+
 import PokeIcon from "/public/images/pokeball.svg";
 
 import Filter from "./Filter";
 import SearchBar from "./SearchBar";
 import GridCards from "./GridCards";
 
-import { GenerationFilterContext } from "../../helpers/context";
+import {
+  GenerationTypeFilterContext,
+  RegionFilterContext,
+} from "../../helpers/context";
 
 import styles from "./Homepage.module.scss";
-import { StaticPokeAPI } from "../../../globals/types";
 
 const Header = () => {
   return (
@@ -27,6 +31,18 @@ const Header = () => {
 const HomePage = ({ data }: InferGetStaticPropsType<GetStaticProps>) => {
   const [pokemons, setPokemons] = useState<Array<StaticPokeAPI>>([]);
   const [generationTypeRadioBtn, setGenerationTypeRadioBtn] = useState(6);
+  const [regionNumberCheckBtn, setRegionNumberCheckBtn] = useState<
+    Array<GenerationNumber>
+  >([
+    "generation-i",
+    "generation-ii",
+    "generation-iii",
+    "generation-iv",
+    "generation-v",
+    "generation-vi",
+    "generation-vii",
+    "generation-viii",
+  ]);
 
   useEffect(() => {
     if (data) setPokemons([...data]);
@@ -36,16 +52,23 @@ const HomePage = ({ data }: InferGetStaticPropsType<GetStaticProps>) => {
     <>
       <Header />
       <div className={styles.defaultLayout}>
-        <GenerationFilterContext.Provider
+        <RegionFilterContext.Provider
           value={{
-            value: generationTypeRadioBtn,
-            setValue: setGenerationTypeRadioBtn,
+            value: regionNumberCheckBtn,
+            setValue: setRegionNumberCheckBtn,
           }}
         >
-          <Filter />
-          <SearchBar data={data} setPokemons={setPokemons} />
-          <GridCards pokemons={pokemons} />
-        </GenerationFilterContext.Provider>
+          <GenerationTypeFilterContext.Provider
+            value={{
+              value: generationTypeRadioBtn,
+              setValue: setGenerationTypeRadioBtn,
+            }}
+          >
+            <Filter />
+            <SearchBar data={data} setPokemons={setPokemons} />
+            <GridCards pokemons={pokemons} />
+          </GenerationTypeFilterContext.Provider>
+        </RegionFilterContext.Provider>
       </div>
     </>
   );

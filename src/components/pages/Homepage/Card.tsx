@@ -4,13 +4,13 @@ import Image from "next/image";
 
 import { PokemonTypeMapping } from "../../../globals/utils";
 import { StaticPokeAPI, PokemonType } from "../../../globals/types";
-import { GenerationFilterContext } from "../../helpers/context";
+import { GenerationTypeFilterContext } from "../../helpers/context";
 
 import styles from "./Homepage.module.scss";
 
 const Card = (props: StaticPokeAPI) => {
   const { id, name, types, past_types: pastTypes, sprites } = props;
-  const context = useContext(GenerationFilterContext);
+  const context = useContext(GenerationTypeFilterContext);
 
   const generationNumberMapping = {
     "generation-i": 1,
