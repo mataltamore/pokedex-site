@@ -82,7 +82,7 @@ export type Ability = {
 
 export type PastPokemonType = {
   generation: {
-    name: string;
+    name: "generation-i" | "generation-v";
     url: string;
   };
   types: Array<PokemonType>;
