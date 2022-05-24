@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { GenerationFilterContext } from "./Homepage";
+import { GenerationFilterContext } from "../../helpers/context";
 import styles from "./Homepage.module.scss";
 
 const Filter = () => {

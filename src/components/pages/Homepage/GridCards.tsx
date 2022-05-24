@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { StaticPokeAPI } from "../../../globals/types";
 
-import Card from "../../helpers/Card/Card";
+import Card from "./Card";
 
 import styles from "./Homepage.module.scss";
 

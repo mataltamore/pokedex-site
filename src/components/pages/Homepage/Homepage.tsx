@@ -1,4 +1,4 @@
-import React, { useEffect, useState, createContext } from "react";
+import React, { useEffect, useState } from "react";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 import Image from "next/image";
 
@@ -8,16 +8,10 @@ import Filter from "./Filter";
 import SearchBar from "./SearchBar";
 import GridCards from "./GridCards";
 
+import { GenerationFilterContext } from "../../helpers/context";
+
 import styles from "./Homepage.module.scss";
 import { StaticPokeAPI } from "../../../globals/types";
-
-type contextType = {
-  value: number;
-  setValue: Function;
-};
-export const GenerationFilterContext = createContext<contextType | undefined>(
-  undefined
-);
 
 const Header = () => {
   return (

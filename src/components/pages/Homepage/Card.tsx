@@ -4,9 +4,9 @@ import Image from "next/image";
 
 import { PokemonTypeMapping } from "../../../globals/utils";
 import { StaticPokeAPI, PokemonType } from "../../../globals/types";
-import { GenerationFilterContext } from "../../pages/Homepage/Homepage";
+import { GenerationFilterContext } from "../../helpers/context";
 
-import styles from "./Card.module.scss";
+import styles from "./Homepage.module.scss";
 
 const Card = (props: StaticPokeAPI) => {
   const { id, name, types, past_types: pastTypes, sprites } = props;
