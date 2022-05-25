@@ -18,7 +18,7 @@ const GenerationTypesFilter = () => {
             type="radio"
             name="genTypes"
             onClick={() => context?.setValue(6)}
-            defaultChecked
+            checked={context?.value === 6}
           />
           6+
         </label>
@@ -29,6 +29,7 @@ const GenerationTypesFilter = () => {
             type="radio"
             name="genTypes"
             onClick={() => context?.setValue(5)}
+            checked={context?.value === 5}
           />
           2-5
         </label>
@@ -39,6 +40,7 @@ const GenerationTypesFilter = () => {
             type="radio"
             name="genTypes"
             onClick={() => context?.setValue(1)}
+            checked={context?.value === 1}
           />
           1
         </label>
@@ -50,7 +52,7 @@ const GenerationTypesFilter = () => {
 const RegionFilter = () => {
   const context = useContext(RegionFilterContext);
 
-  const regions = [
+  const regions: Array<{ name: string; number: GenerationNumber }> = [
     {
       name: "Kanto",
       number: "generation-i",
@@ -109,7 +111,7 @@ const RegionFilter = () => {
                       )
                     );
                 }}
-                defaultChecked
+                checked={context?.value.includes(region.number)}
               />
               {region.name}
             </label>
