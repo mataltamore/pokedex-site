@@ -13,3 +13,7 @@ export const GenerationTypeFilterContext = createContext<
 export const RegionFilterContext = createContext<
   contextType<Array<GenerationNumber>> | undefined
 >(undefined);
+
+export const PokemonTypeContext = createContext<
+  contextType<Array<string>> | undefined
+>(undefined);

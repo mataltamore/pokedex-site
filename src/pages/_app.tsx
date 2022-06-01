@@ -7,6 +7,7 @@ import { GenerationNumber } from "../globals/types";
 import {
   GenerationTypeFilterContext,
   RegionFilterContext,
+  PokemonTypeContext,
 } from "../components/helpers/context";
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -23,23 +24,49 @@ function MyApp({ Component, pageProps }: AppProps) {
     "generation-vii",
     "generation-viii",
   ]);
+  const [pokemonTypeCheckBtn, setPokemonTypeCheckBtn] = useState<Array<string>>(
+    [
+      "normal",
+      "fire",
+      "fight",
+      "water",
+      "flying",
+      "grass",
+      "poison",
+      "electric",
+      "ground",
+      "psychic",
+      "rock",
+      "ice",
+      "bug",
+      "dragon",
+      "ghost",
+      "dark",
+      "steel",
+      "fairy",
+    ]
+  );
 
   return (
-    <RegionFilterContext.Provider
-      value={{
-        value: regionNumberCheckBtn,
-        setValue: setRegionNumberCheckBtn,
-      }}
+    <PokemonTypeContext.Provider
+      value={{ value: pokemonTypeCheckBtn, setValue: setPokemonTypeCheckBtn }}
     >
-      <GenerationTypeFilterContext.Provider
+      <RegionFilterContext.Provider
         value={{
-          value: generationTypeRadioBtn,
-          setValue: setGenerationTypeRadioBtn,
+          value: regionNumberCheckBtn,
+          setValue: setRegionNumberCheckBtn,
         }}
       >
-        <Component {...pageProps} />
-      </GenerationTypeFilterContext.Provider>
-    </RegionFilterContext.Provider>
+        <GenerationTypeFilterContext.Provider
+          value={{
+            value: generationTypeRadioBtn,
+            setValue: setGenerationTypeRadioBtn,
+          }}
+        >
+          <Component {...pageProps} />
+        </GenerationTypeFilterContext.Provider>
+      </RegionFilterContext.Provider>
+    </PokemonTypeContext.Provider>
   );
 }
 

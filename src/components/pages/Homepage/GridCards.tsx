@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { StaticPokeAPI } from "../../../globals/types";
-import { RegionFilterContext } from "../../helpers/context";
+import { RegionFilterContext, PokemonTypeContext } from "../../helpers/context";
 
 import Card from "./Card";
 
@@ -9,7 +9,9 @@ import styles from "./Homepage.module.scss";
 const GridCards = (props: { pokemons: Array<StaticPokeAPI> }) => {
   const { pokemons } = props;
   const [isLoaded, setIsLoaded] = useState(false);
-  const context = useContext(RegionFilterContext);
+
+  const regionContext = useContext(RegionFilterContext);
+  const pokemonTypeContext = useContext(PokemonTypeContext);
 
   useEffect(() => {
     if (pokemons.length) setIsLoaded(true);
@@ -23,7 +25,12 @@ const GridCards = (props: { pokemons: Array<StaticPokeAPI> }) => {
   return (
     <div className={styles.gridLayout}>
       {pokemons
-        .filter((pokemon) => context?.value.includes(pokemon.generation))
+        .filter(
+          (pokemon) =>
+            (regionContext?.value.includes(pokemon.generation) &&
+              pokemonTypeContext?.value.includes(pokemon.types[0].type.name)) ||
+            pokemonTypeContext?.value.includes(pokemon.types[1]?.type.name)
+        )
         .map((pokemon: StaticPokeAPI) => {
           return <Card key={pokemon.id} {...pokemon} />;
         })}

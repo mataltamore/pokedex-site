@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import {
   GenerationTypeFilterContext,
   RegionFilterContext,
+  PokemonTypeContext,
 } from "../../helpers/context";
 import { GenerationNumber } from "../../../globals/types";
 import styles from "./Homepage.module.scss";
@@ -98,7 +99,7 @@ const RegionFilter = () => {
                 type="checkbox"
                 name="genNumber"
                 onClick={(event: React.MouseEvent) => {
-                  const target = event.target as HTMLInputElement;
+                  const target = event.currentTarget as HTMLInputElement;
                   if (target.checked)
                     context?.setValue((prev: Array<GenerationNumber>) => [
                       ...prev,
@@ -122,11 +123,69 @@ const RegionFilter = () => {
   );
 };
 
+const TypesFilter = () => {
+  const context = useContext(PokemonTypeContext);
+
+  const pokemonTypes: Array<string> = [
+    "normal",
+    "fire",
+    "fight",
+    "water",
+    "flying",
+    "grass",
+    "poison",
+    "electric",
+    "ground",
+    "psychic",
+    "rock",
+    "ice",
+    "bug",
+    "dragon",
+    "ghost",
+    "dark",
+    "steel",
+    "fairy",
+  ];
+
+  return (
+    <div className={styles.generationTypesFilter}>
+      <legend>Select pokemons by type:</legend>
+      {pokemonTypes.map((pokemonType) => {
+        return (
+          <div key={pokemonType}>
+            <label>
+              <input
+                type="checkbox"
+                name="pokemonType"
+                onClick={(event: React.MouseEvent) => {
+                  const target = event.currentTarget as HTMLInputElement;
+                  if (target.checked)
+                    context?.setValue((prev: Array<string>) => [
+                      ...prev,
+                      pokemonType,
+                    ]);
+                  else
+                    context?.setValue((prev: Array<string>) =>
+                      prev.filter((item: string) => item !== pokemonType)
+                    );
+                }}
+                checked={context?.value.includes(pokemonType)}
+              />
+              {pokemonType}
+            </label>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
 const Filter = () => {
   return (
     <div className={styles.filterWrapper}>
       <GenerationTypesFilter />
       <RegionFilter />
+      <TypesFilter />
     </div>
   );
 };
