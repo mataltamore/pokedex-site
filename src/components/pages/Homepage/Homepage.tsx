@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 import Image from "next/image";
 
+import { StaticPokeAPI } from "../../../globals/types";
+
 import PokeIcon from "/public/images/pokeball.svg";
 
+import Filter from "./Filter";
 import SearchBar from "./SearchBar";
 import GridCards from "./GridCards";
 
 import styles from "./Homepage.module.scss";
-import { StaticPokeAPI } from "../../../globals/types";
 
 const Header = () => {
   return (
@@ -32,7 +34,10 @@ const HomePage = ({ data }: InferGetStaticPropsType<GetStaticProps>) => {
     <>
       <Header />
       <div className={styles.defaultLayout}>
-        <SearchBar data={data} setPokemons={setPokemons} />
+        <div className={styles.filterSection}>
+          <Filter />
+          <SearchBar data={data} setPokemons={setPokemons} />
+        </div>
         <GridCards pokemons={pokemons} />
       </div>
     </>

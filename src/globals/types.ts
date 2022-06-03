@@ -7,6 +7,7 @@ export type StaticPokeAPI = {
     official: string;
     dream_world: string;
   };
+  generation: GenerationNumber;
 };
 
 export type PokeAPI = {
@@ -82,11 +83,21 @@ export type Ability = {
 
 export type PastPokemonType = {
   generation: {
-    name: string;
+    name: "generation-i" | "generation-v";
     url: string;
   };
   types: Array<PokemonType>;
 };
+
+export type GenerationNumber =
+  | "generation-i"
+  | "generation-ii"
+  | "generation-iii"
+  | "generation-iv"
+  | "generation-v"
+  | "generation-vi"
+  | "generation-vii"
+  | "generation-viii";
 
 type GameIndex = {
   game_index: number;

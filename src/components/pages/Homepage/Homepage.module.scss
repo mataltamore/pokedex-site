@@ -55,15 +55,11 @@
 
 .searchBar {
   @include flex($align: center);
-  width: 40%;
+  width: 100%;
   padding: 0.3125rem;
 
   border-bottom: 0.0625rem solid black;
   border-radius: 0.3125rem;
-
-  @include media(desktop) {
-    width: 30%;
-  }
 
   &__input {
     width: 100%;
@@ -86,4 +82,106 @@
   grid-template-columns: repeat(auto-fill, 9.375rem);
   justify-content: center;
   place-items: center;
+}
+
+.cardShadow {
+  border: 10px solid white;
+  border-radius: 20px;
+  box-shadow: 0rem 0rem 0.3125rem 0.3125rem rgb(213, 211, 211);
+  background: linear-gradient(
+    180deg,
+    rgb(255, 250, 235) 0%,
+    rgb(255, 255, 255) 100%
+  );
+
+  &:hover {
+    background: linear-gradient(
+      180deg,
+      rgb(250, 235, 200) 0%,
+      rgb(255, 255, 255) 100%
+    );
+  }
+}
+
+.card {
+  @include flex(
+    $direction: column,
+    $align: center,
+    $justify: center,
+    $gap: 1.5rem
+  );
+  width: 12.5rem;
+  height: 18.75rem;
+  @extend .cardShadow;
+
+  font-size: 0.875rem;
+  font-weight: 800;
+  padding: 0.3125rem 0;
+  color: $smoother-black;
+  cursor: pointer;
+
+  &__number {
+    align-self: flex-start;
+    padding-left: 5%;
+  }
+
+  &__image {
+    @include image($w: 7.25rem, $h: 7.25rem);
+  }
+
+  &__name {
+    text-transform: capitalize;
+  }
+
+  &__types {
+    @include flex($gap: 10px);
+
+    font-weight: 500;
+    color: white;
+    text-transform: capitalize;
+    padding-bottom: 0.5rem;
+
+    & > span {
+      padding: 0.2rem 0.5rem;
+      border-radius: 10px;
+    }
+  }
+}
+
+.filterSection {
+  @include flex($align: center, $justify: space-between);
+}
+
+.filterWrapper {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  z-index: 1;
+  background-color: $filter-red;
+  color: white;
+  border: none;
+  cursor: pointer;
+
+  @include flex($justify: center, $wrap: wrap);
+
+  &__image {
+    @include image($w: 1.5rem, $h: 1rem);
+  }
+}
+
+.generationTypesFilter {
+  @include flex($direction: column, $align: flex-start, $gap: 0.2rem);
+  padding: 1rem;
+  text-transform: capitalize;
+
+  & input {
+    margin-inline: 1rem;
+    font-size: 0.875rem;
+    cursor: pointer;
+  }
+
+  & legend {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
 }
