@@ -12,7 +12,7 @@ import styles from "./Homepage.module.scss";
 const GenerationTypesFilter = () => {
   const context = useContext(GenerationTypeFilterContext);
 
-  const isChecked = (radioValue: number) => context?.value === radioValue;
+  const isChecked = (radioValue: number) => context.value === radioValue;
 
   return (
     <div className={styles.generationTypesFilter}>
@@ -23,7 +23,7 @@ const GenerationTypesFilter = () => {
             type="radio"
             name="genTypes"
             value="6"
-            onClick={() => context?.setValue(6)}
+            onClick={() => context.setValue(6)}
             defaultChecked={isChecked(6)}
           />
           6+
@@ -34,7 +34,7 @@ const GenerationTypesFilter = () => {
           <input
             type="radio"
             name="genTypes"
-            onClick={() => context?.setValue(5)}
+            onClick={() => context.setValue(5)}
             defaultChecked={isChecked(5)}
           />
           2-5
@@ -45,7 +45,7 @@ const GenerationTypesFilter = () => {
           <input
             type="radio"
             name="genTypes"
-            onClick={() => context?.setValue(1)}
+            onClick={() => context.setValue(1)}
             defaultChecked={isChecked(1)}
           />
           1
@@ -94,7 +94,7 @@ const RegionFilter = () => {
   ];
 
   const isChecked = (regionNumber: GenerationNumber) =>
-    context?.value.includes(regionNumber);
+    context.value.includes(regionNumber);
 
   return (
     <div className={styles.generationTypesFilter}>
@@ -109,12 +109,12 @@ const RegionFilter = () => {
                 onClick={(event: React.MouseEvent) => {
                   const target = event.currentTarget as HTMLInputElement;
                   if (target.checked)
-                    context?.setValue((prev: Array<GenerationNumber>) => [
+                    context.setValue((prev: Array<GenerationNumber>) => [
                       ...prev,
                       region.number,
                     ]);
                   else
-                    context?.setValue((prev: Array<GenerationNumber>) =>
+                    context.setValue((prev: Array<GenerationNumber>) =>
                       prev.filter(
                         (item: GenerationNumber) => item !== region.number
                       )
@@ -156,7 +156,7 @@ const TypesFilter = () => {
   ];
 
   const isChecked = (pokemonType: string) =>
-    context?.value.includes(pokemonType);
+    context.value.includes(pokemonType);
 
   return (
     <div className={styles.generationTypesFilter}>
@@ -171,12 +171,12 @@ const TypesFilter = () => {
                 onClick={(event: React.MouseEvent) => {
                   const target = event.currentTarget as HTMLInputElement;
                   if (target.checked)
-                    context?.setValue((prev: Array<string>) => [
+                    context.setValue((prev: Array<string>) => [
                       ...prev,
                       pokemonType,
                     ]);
                   else
-                    context?.setValue((prev: Array<string>) =>
+                    context.setValue((prev: Array<string>) =>
                       prev.filter((item: string) => item !== pokemonType)
                     );
                 }}

@@ -26,13 +26,13 @@ const GridCards = (props: { pokemons: Array<StaticPokeAPI> }) => {
     <div className={styles.gridLayout}>
       {pokemons
         .filter((pokemon) => {
-          const isRegionSelected = regionContext?.value.includes(
+          const isRegionSelected = regionContext.value.includes(
             pokemon.generation
           );
           const isTypesSelected =
-            pokemonTypeContext?.value.includes(pokemon.types[0].type.name) ||
+            pokemonTypeContext.value.includes(pokemon.types[0].type.name) ||
             (pokemon.types[1] &&
-              pokemonTypeContext?.value.includes(pokemon.types[1].type.name));
+              pokemonTypeContext.value.includes(pokemon.types[1].type.name));
           return isRegionSelected && isTypesSelected;
         })
         .map((pokemon: StaticPokeAPI) => {

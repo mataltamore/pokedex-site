@@ -19,7 +19,7 @@ const Card = (props: StaticPokeAPI) => {
 
   const displayNewTypes =
     pastTypes.length === 0 ||
-    (context?.value || 6) >
+    (context.value || 6) >
       generationNumberMapping[pastTypes[0].generation.name];
 
   return (

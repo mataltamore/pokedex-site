@@ -6,14 +6,19 @@ type contextType<T> = {
   setValue: Function;
 };
 
-export const GenerationTypeFilterContext = createContext<
-  contextType<number> | undefined
->(undefined);
+export const GenerationTypeFilterContext = createContext<contextType<number>>({
+  value: 0,
+  setValue: () => {},
+});
 
 export const RegionFilterContext = createContext<
-  contextType<Array<GenerationNumber>> | undefined
->(undefined);
+  contextType<Array<GenerationNumber>>
+>({
+  value: [],
+  setValue: () => {},
+});
 
-export const PokemonTypeContext = createContext<
-  contextType<Array<string>> | undefined
->(undefined);
+export const PokemonTypeContext = createContext<contextType<Array<string>>>({
+  value: [],
+  setValue: () => {},
+});
