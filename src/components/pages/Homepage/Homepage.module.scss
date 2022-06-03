@@ -160,10 +160,13 @@
 
   background-color: $filter-red;
   color: white;
+  border: none;
 }
 
 .generationTypesFilter {
+  @include flex($direction: column, $align: flex-start, $gap: 0.2rem);
   padding: 1rem;
+  text-transform: capitalize;
 
   & input {
     margin-inline: 1rem;
@@ -173,5 +176,6 @@
 
   & legend {
     font-size: 1.2rem;
+    margin-bottom: 1rem;
   }
 }

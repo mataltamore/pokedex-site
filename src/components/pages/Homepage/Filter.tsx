@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import {
   GenerationTypeFilterContext,
   RegionFilterContext,
@@ -10,6 +10,8 @@ import styles from "./Homepage.module.scss";
 const GenerationTypesFilter = () => {
   const context = useContext(GenerationTypeFilterContext);
 
+  const isChecked = (radioValue: number) => context?.value === radioValue;
+
   return (
     <div className={styles.generationTypesFilter}>
       <legend>Select types by generation:</legend>
@@ -18,8 +20,9 @@ const GenerationTypesFilter = () => {
           <input
             type="radio"
             name="genTypes"
+            value="6"
             onClick={() => context?.setValue(6)}
-            checked={context?.value === 6}
+            defaultChecked={isChecked(6)}
           />
           6+
         </label>
@@ -30,7 +33,7 @@ const GenerationTypesFilter = () => {
             type="radio"
             name="genTypes"
             onClick={() => context?.setValue(5)}
-            checked={context?.value === 5}
+            defaultChecked={isChecked(5)}
           />
           2-5
         </label>
@@ -41,7 +44,7 @@ const GenerationTypesFilter = () => {
             type="radio"
             name="genTypes"
             onClick={() => context?.setValue(1)}
-            checked={context?.value === 1}
+            defaultChecked={isChecked(1)}
           />
           1
         </label>
@@ -88,6 +91,9 @@ const RegionFilter = () => {
     },
   ];
 
+  const isChecked = (regionNumber: GenerationNumber) =>
+    context?.value.includes(regionNumber);
+
   return (
     <div className={styles.generationTypesFilter}>
       <legend>Select pokemon by region:</legend>
@@ -112,7 +118,7 @@ const RegionFilter = () => {
                       )
                     );
                 }}
-                checked={context?.value.includes(region.number)}
+                defaultChecked={isChecked(region.number)}
               />
               {region.name}
             </label>
@@ -147,6 +153,9 @@ const TypesFilter = () => {
     "fairy",
   ];
 
+  const isChecked = (pokemonType: string) =>
+    context?.value.includes(pokemonType);
+
   return (
     <div className={styles.generationTypesFilter}>
       <legend>Select pokemons by type:</legend>
@@ -169,7 +178,7 @@ const TypesFilter = () => {
                       prev.filter((item: string) => item !== pokemonType)
                     );
                 }}
-                checked={context?.value.includes(pokemonType)}
+                defaultChecked={isChecked(pokemonType)}
               />
               {pokemonType}
             </label>
@@ -181,12 +190,38 @@ const TypesFilter = () => {
 };
 
 const Filter = () => {
+  const [openButton, setOpenButton] = useState(false);
+  const buttonStyle = {
+    width: openButton ? "fit-content" : "3rem",
+    height: openButton ? "fit-content" : "3rem",
+    borderRadius: openButton ? "0" : "30px",
+  };
+
+  /* Another way to handle the behavior of the filter div
+    onFocus={() => setOpenButton(true)}
+    onBlur={(event) => {
+      if (!event?.currentTarget?.contains(event?.relatedTarget))
+      setOpenButton(false);
+    }}
+  */
+
   return (
-    <div className={styles.filterWrapper}>
-      <GenerationTypesFilter />
-      <RegionFilter />
-      <TypesFilter />
-    </div>
+    <button
+      className={styles.filterWrapper}
+      style={buttonStyle}
+      onMouseEnter={() => setOpenButton(true)}
+      onMouseLeave={() => setOpenButton(false)}
+    >
+      {openButton ? (
+        <>
+          <GenerationTypesFilter />
+          <RegionFilter />
+          <TypesFilter />
+        </>
+      ) : (
+        "+"
+      )}
+    </button>
   );
 };
 
