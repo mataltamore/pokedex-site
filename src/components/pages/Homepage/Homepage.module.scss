@@ -55,15 +55,11 @@
 
 .searchBar {
   @include flex($align: center);
-  width: 40%;
+  width: 100%;
   padding: 0.3125rem;
 
   border-bottom: 0.0625rem solid black;
   border-radius: 0.3125rem;
-
-  @include media(desktop) {
-    width: 30%;
-  }
 
   &__input {
     width: 100%;
@@ -152,15 +148,25 @@
   }
 }
 
+.filterSection {
+  @include flex($align: center, $justify: space-between);
+}
+
 .filterWrapper {
   position: absolute;
   top: 2rem;
   left: 2rem;
   z-index: 1;
-
   background-color: $filter-red;
   color: white;
   border: none;
+  cursor: pointer;
+
+  @include flex($justify: center, $wrap: wrap);
+
+  &__image {
+    @include image($w: 1.5rem, $h: 1rem);
+  }
 }
 
 .generationTypesFilter {

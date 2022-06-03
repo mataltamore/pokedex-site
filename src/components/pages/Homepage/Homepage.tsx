@@ -34,8 +34,10 @@ const HomePage = ({ data }: InferGetStaticPropsType<GetStaticProps>) => {
     <>
       <Header />
       <div className={styles.defaultLayout}>
-        <Filter />
-        <SearchBar data={data} setPokemons={setPokemons} />
+        <div className={styles.filterSection}>
+          <Filter />
+          <SearchBar data={data} setPokemons={setPokemons} />
+        </div>
         <GridCards pokemons={pokemons} />
       </div>
     </>

@@ -1,10 +1,12 @@
 import React, { useContext, useState } from "react";
+import Image from "next/image";
 import {
   GenerationTypeFilterContext,
   RegionFilterContext,
   PokemonTypeContext,
 } from "../../helpers/context";
 import { GenerationNumber } from "../../../globals/types";
+import FilterIcon from "../../../../public/images/filter-icon.svg";
 import styles from "./Homepage.module.scss";
 
 const GenerationTypesFilter = () => {
@@ -195,22 +197,23 @@ const Filter = () => {
     width: openButton ? "fit-content" : "3rem",
     height: openButton ? "fit-content" : "3rem",
     borderRadius: openButton ? "0" : "30px",
+    alignItems: openButton ? "flex-start" : "center",
   };
 
   /* Another way to handle the behavior of the filter div
-    onFocus={() => setOpenButton(true)}
-    onBlur={(event) => {
-      if (!event?.currentTarget?.contains(event?.relatedTarget))
-      setOpenButton(false);
-    }}
+    onMouseEnter={() => setOpenButton(true)}
+    onMouseLeave={() => setOpenButton(false)}
   */
 
   return (
     <button
       className={styles.filterWrapper}
       style={buttonStyle}
-      onMouseEnter={() => setOpenButton(true)}
-      onMouseLeave={() => setOpenButton(false)}
+      onFocus={() => setOpenButton(true)}
+      onBlur={(event) => {
+        if (!event?.currentTarget?.contains(event?.relatedTarget))
+          setOpenButton(false);
+      }}
     >
       {openButton ? (
         <>
@@ -219,7 +222,9 @@ const Filter = () => {
           <TypesFilter />
         </>
       ) : (
-        "+"
+        <div className={styles.filterWrapper__image}>
+          <Image src={FilterIcon} alt="Filter Icon" />
+        </div>
       )}
     </button>
   );
