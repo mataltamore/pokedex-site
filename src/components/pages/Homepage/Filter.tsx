@@ -1,18 +1,13 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
-import {
-  GenerationTypeFilterContext,
-  RegionFilterContext,
-  PokemonTypeContext,
-} from "../../helpers/context";
-import { GenerationNumber } from "../../../globals/types";
+import { useGlobalFilter, ContextType, ACTION } from "../../helpers/context";
+import { GenerationNumber, PokemonTypeName } from "../../../globals/types";
 import FilterIcon from "../../../../public/images/filter-icon.svg";
 import styles from "./Homepage.module.scss";
 
-const GenerationTypesFilter = () => {
-  const context = useContext(GenerationTypeFilterContext);
-
-  const isChecked = (radioValue: number) => context.value === radioValue;
+const GenerationTypesFilter = ({ state, dispatch }: ContextType) => {
+  const isChecked = (radioValue: number) =>
+    state.generationTypeRadioBtn === radioValue;
 
   return (
     <div className={styles.generationTypesFilter}>
@@ -23,7 +18,7 @@ const GenerationTypesFilter = () => {
             type="radio"
             name="genTypes"
             value="6"
-            onClick={() => context.setValue(6)}
+            onClick={() => dispatch({ type: ACTION.GENERATION, payload: 6 })}
             defaultChecked={isChecked(6)}
           />
           6+
@@ -34,7 +29,7 @@ const GenerationTypesFilter = () => {
           <input
             type="radio"
             name="genTypes"
-            onClick={() => context.setValue(5)}
+            onClick={() => dispatch({ type: ACTION.GENERATION, payload: 5 })}
             defaultChecked={isChecked(5)}
           />
           2-5
@@ -45,7 +40,7 @@ const GenerationTypesFilter = () => {
           <input
             type="radio"
             name="genTypes"
-            onClick={() => context.setValue(1)}
+            onClick={() => dispatch({ type: ACTION.GENERATION, payload: 1 })}
             defaultChecked={isChecked(1)}
           />
           1
@@ -55,9 +50,7 @@ const GenerationTypesFilter = () => {
   );
 };
 
-const RegionFilter = () => {
-  const context = useContext(RegionFilterContext);
-
+const RegionFilter = ({ state, dispatch }: ContextType) => {
   const regions: Array<{ name: string; number: GenerationNumber }> = [
     {
       name: "Kanto",
@@ -94,7 +87,7 @@ const RegionFilter = () => {
   ];
 
   const isChecked = (regionNumber: GenerationNumber) =>
-    context.value.includes(regionNumber);
+    state.regionNumberCheckBtn.includes(regionNumber);
 
   return (
     <div className={styles.generationTypesFilter}>
@@ -108,17 +101,13 @@ const RegionFilter = () => {
                 name="genNumber"
                 onClick={(event: React.MouseEvent) => {
                   const target = event.currentTarget as HTMLInputElement;
-                  if (target.checked)
-                    context.setValue((prev: Array<GenerationNumber>) => [
-                      ...prev,
-                      region.number,
-                    ]);
-                  else
-                    context.setValue((prev: Array<GenerationNumber>) =>
-                      prev.filter(
-                        (item: GenerationNumber) => item !== region.number
-                      )
-                    );
+                  dispatch({
+                    type: ACTION.REGION,
+                    payload: {
+                      isChecked: target.checked,
+                      regionNumber: region.number,
+                    },
+                  });
                 }}
                 defaultChecked={isChecked(region.number)}
               />
@@ -131,13 +120,11 @@ const RegionFilter = () => {
   );
 };
 
-const TypesFilter = () => {
-  const context = useContext(PokemonTypeContext);
-
-  const pokemonTypes: Array<string> = [
+const TypesFilter = ({ state, dispatch }: ContextType) => {
+  const pokemonTypes: Array<PokemonTypeName> = [
     "normal",
     "fire",
-    "fight",
+    "fighting",
     "water",
     "flying",
     "grass",
@@ -155,8 +142,8 @@ const TypesFilter = () => {
     "fairy",
   ];
 
-  const isChecked = (pokemonType: string) =>
-    context.value.includes(pokemonType);
+  const isChecked = (pokemonType: PokemonTypeName) =>
+    state.pokemonTypeCheckBtn.includes(pokemonType);
 
   return (
     <div className={styles.generationTypesFilter}>
@@ -170,15 +157,13 @@ const TypesFilter = () => {
                 name="pokemonType"
                 onClick={(event: React.MouseEvent) => {
                   const target = event.currentTarget as HTMLInputElement;
-                  if (target.checked)
-                    context.setValue((prev: Array<string>) => [
-                      ...prev,
+                  dispatch({
+                    type: ACTION.TYPE,
+                    payload: {
+                      isChecked: target.checked,
                       pokemonType,
-                    ]);
-                  else
-                    context.setValue((prev: Array<string>) =>
-                      prev.filter((item: string) => item !== pokemonType)
-                    );
+                    },
+                  });
                 }}
                 defaultChecked={isChecked(pokemonType)}
               />
@@ -192,6 +177,8 @@ const TypesFilter = () => {
 };
 
 const Filter = () => {
+  const { state, dispatch } = useGlobalFilter();
+
   const [openButton, setOpenButton] = useState(false);
   const buttonStyle = {
     width: openButton ? "fit-content" : "3rem",
@@ -217,9 +204,9 @@ const Filter = () => {
     >
       {openButton ? (
         <>
-          <GenerationTypesFilter />
-          <RegionFilter />
-          <TypesFilter />
+          <GenerationTypesFilter {...{ state, dispatch }} />
+          <RegionFilter {...{ state, dispatch }} />
+          <TypesFilter {...{ state, dispatch }} />
         </>
       ) : (
         <div className={styles.filterWrapper__image}>

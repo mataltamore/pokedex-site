@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StaticPokeAPI } from "../../../globals/types";
-import { RegionFilterContext, PokemonTypeContext } from "../../helpers/context";
+import { useGlobalFilter } from "../../helpers/context";
 
 import Card from "./Card";
 
@@ -10,8 +10,7 @@ const GridCards = (props: { pokemons: Array<StaticPokeAPI> }) => {
   const { pokemons } = props;
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const regionContext = useContext(RegionFilterContext);
-  const pokemonTypeContext = useContext(PokemonTypeContext);
+  const { state: stateFilter } = useGlobalFilter();
 
   useEffect(() => {
     if (pokemons.length) setIsLoaded(true);
@@ -26,13 +25,17 @@ const GridCards = (props: { pokemons: Array<StaticPokeAPI> }) => {
     <div className={styles.gridLayout}>
       {pokemons
         .filter((pokemon) => {
-          const isRegionSelected = regionContext.value.includes(
+          const isRegionSelected = stateFilter.regionNumberCheckBtn.includes(
             pokemon.generation
           );
           const isTypesSelected =
-            pokemonTypeContext.value.includes(pokemon.types[0].type.name) ||
+            stateFilter.pokemonTypeCheckBtn.includes(
+              pokemon.types[0].type.name
+            ) ||
             (pokemon.types[1] &&
-              pokemonTypeContext.value.includes(pokemon.types[1].type.name));
+              stateFilter.pokemonTypeCheckBtn.includes(
+                pokemon.types[1].type.name
+              ));
           return isRegionSelected && isTypesSelected;
         })
         .map((pokemon: StaticPokeAPI) => {
