@@ -1,34 +1,67 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Simple Pokedex Website
 
-## Getting Started
+## Why I made this
 
-First, run the development server:
+I've built this project in order to understand in a better way how Next.js works (with routing, getProps methods and the others advantages it shows). Also, I wanted to understand if Context API could be a thing and it can be a good replacement of Redux, since I'm using RTK at work.
 
-```bash
-npm run dev
-# or
-yarn dev
+## What I used
+
+As I said, I'm using typescript, React.js and Next.js, also I'm using SASS for the styling. State Management is done with Context API (useContext + useReducer hooks) for the global filter inside the homepage. No backend language needed for this.
+
+## Where do I get the data
+
+To get all of pokemons' information, I've used the PokeAPI v2.0 (https://pokeapi.co/docs/v2), but I'm not doing a for loop to get all the information inside the homepage (because it could cost a lot in terms of time) so instead I've made a little script to build a custom JSON and then I fetched the data through Next.js getStaticProps (also in this way the images load ~70% faster).
+
+#### You can find that script below
+
+(I've just called it index.js, but you can call it however you want, just remeber to edit the <script_name>.js inside the HTML file).
+
+```
+const BASE_URL = "https://pokeapi.co/api/v2/pokemon/";
+const BASE_URL_2 = "https://pokeapi.co/api/v2/pokemon-species/";
+const LIMIT = 899;
+
+const fetchPokemon = async () => {
+  const data = [];
+  for (let k = 1; k < LIMIT; k++) {
+    const response = await fetch(BASE_URL.concat(k)).then((r) => r.json());
+    const response2 = await fetch(BASE_URL_2.concat(k)).then((r) => r.json());
+
+    const newMon = {
+      id: response.id,
+      name: response.name,
+      types: response.types,
+      past_types: response.past_types,
+      sprites: {
+        official: response.sprites.other["official-artwork"].front_default,
+        dream_world: response.sprites.other.dream_world.front_default,
+      },
+      generation: response2.generation.name,
+    };
+
+    data.push(newMon);
+
+    if (k % 50 === 0)
+      console.log(((k / (LIMIT - 1)) * 100).toFixed(2).toString().concat("%"));
+  }
+
+  const FORMAT =
+    "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data));
+
+  const anchorElem = document.getElementById("allPokemons");
+  anchorElem.setAttribute("href", FORMAT);
+  anchorElem.setAttribute("download", "pokemon-species.json");
+  anchorElem.click();
+};
+
+fetchPokemon();
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+To execute this on a boilerplate HTML file, simply add those two tags inside the body:
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+```
+<a id="allPokemons" style="display: none"></a>
+<script src="<script_name>.js"></script>
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+That's all, hope you find this helpful. It has been fun to do.
