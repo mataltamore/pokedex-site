@@ -1,16 +1,17 @@
-import React, { useContext } from "react";
+import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 
 import { PokemonTypeMapping } from "../../../globals/utils";
 import { StaticPokeAPI, PokemonType } from "../../../globals/types";
-import { GenerationTypeFilterContext } from "../../helpers/context";
+
+import { useGlobalFilter } from "../../../globals/context/GlobalFilter/context";
 
 import styles from "./Homepage.module.scss";
 
 const Card = (props: StaticPokeAPI) => {
   const { id, name, types, past_types: pastTypes, sprites } = props;
-  const context = useContext(GenerationTypeFilterContext);
+  const { state: stateFilter } = useGlobalFilter();
 
   const generationNumberMapping = {
     "generation-i": 1,
@@ -19,7 +20,7 @@ const Card = (props: StaticPokeAPI) => {
 
   const displayNewTypes =
     pastTypes.length === 0 ||
-    (context?.value || 6) >
+    (stateFilter.generationTypeRadioBtn || 6) >
       generationNumberMapping[pastTypes[0].generation.name];
 
   return (
