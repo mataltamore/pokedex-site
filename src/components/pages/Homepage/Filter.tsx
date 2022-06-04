@@ -14,46 +14,36 @@ import FilterIcon from "../../../../public/images/filter-icon.svg";
 import styles from "./Homepage.module.scss";
 
 const GenerationTypesFilter = ({ state, dispatch }: ContextType) => {
+  const generationTypes = [
+    { value: 6, text: "6+" },
+    { value: 5, text: "2-5" },
+    { value: 1, text: "1" },
+  ];
+
   const isChecked = (radioValue: number) =>
     state.generationTypeRadioBtn === radioValue;
 
   return (
     <div className={styles.generationTypesFilter}>
       <legend>Select types by generation:</legend>
-      <div>
-        <label>
-          <input
-            type="radio"
-            name="genTypes"
-            value="6"
-            onClick={() => dispatch({ type: ACTION.GENERATION, payload: 6 })}
-            defaultChecked={isChecked(6)}
-          />
-          6+
-        </label>
-      </div>
-      <div>
-        <label>
-          <input
-            type="radio"
-            name="genTypes"
-            onClick={() => dispatch({ type: ACTION.GENERATION, payload: 5 })}
-            defaultChecked={isChecked(5)}
-          />
-          2-5
-        </label>
-      </div>
-      <div>
-        <label>
-          <input
-            type="radio"
-            name="genTypes"
-            onClick={() => dispatch({ type: ACTION.GENERATION, payload: 1 })}
-            defaultChecked={isChecked(1)}
-          />
-          1
-        </label>
-      </div>
+      {generationTypes.map((item) => {
+        return (
+          <div key={item.value}>
+            <label>
+              <input
+                type="radio"
+                name="genTypes"
+                value={item.value}
+                onClick={() =>
+                  dispatch({ type: ACTION.GENERATION, payload: item.value })
+                }
+                defaultChecked={isChecked(item.value)}
+              />
+              {item.text}
+            </label>
+          </div>
+        );
+      })}
     </div>
   );
 };
