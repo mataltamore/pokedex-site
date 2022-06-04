@@ -32,6 +32,7 @@ export type PokeSpecieAPI = {
   capture_rate: number;
   color: { name: string };
   egg_groups: Array<{ name: string }>;
+  evolution_chain: { url: string };
   flavor_text_entries: Array<FlavorTextEntry>;
   gender_rate: number;
   generation: { name: string };

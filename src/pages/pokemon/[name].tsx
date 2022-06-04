@@ -22,14 +22,18 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const responseDetail = await fetch(BASE_URL_DETAIL);
   const pokemonDetailData = await responseDetail.json();
 
+  const responseEvolution = await fetch(pokemonDetailData.evolution_chain.url);
+  const pokemonEvolutionData = await responseEvolution.json();
+
   return {
-    props: { pokemonData, pokemonDetailData, titleName },
+    props: { pokemonData, pokemonDetailData, pokemonEvolutionData, titleName },
   };
 };
 
 const Pokemon: NextPage = ({
   pokemonData,
   pokemonDetailData,
+  pokemonEvolutionData,
   titleName,
 }: InferGetServerSidePropsType<GetServerSideProps>) => {
   return (
@@ -39,7 +43,11 @@ const Pokemon: NextPage = ({
         <meta name={titleName} content={`${titleName}-description`} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <DetailPage data={pokemonData} detail={pokemonDetailData} />
+      <DetailPage
+        data={pokemonData}
+        detail={pokemonDetailData}
+        evolution={pokemonEvolutionData}
+      />
     </>
   );
 };

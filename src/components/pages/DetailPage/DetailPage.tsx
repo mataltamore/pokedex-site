@@ -17,6 +17,7 @@ import PokemonEvolution from "./PokemonEvolution";
 type DetailPageProps = {
   data: PokeAPI;
   detail: PokeSpecieAPI;
+  evolution: any;
 };
 
 type FooterDetailProps = {
@@ -49,8 +50,8 @@ const Footer = ({ color }: FooterDetailProps) => {
 };
 
 const DetailPage: NextPage<DetailPageProps> = (props) => {
-  const { data, detail } = props;
-  const { types, abilities, weight, height, id, name } = data;
+  const { data, detail, evolution } = props;
+  const { types, abilities, weight, height, id } = data;
 
   const color = PokemonTypeMapping[data.types[0].type.name].color;
   const secondColor = PokemonTypeMapping[data.types[1]?.type.name]?.color;
@@ -66,11 +67,6 @@ const DetailPage: NextPage<DetailPageProps> = (props) => {
       ? detail.flavor_text_entries[0]?.flavor_text
       : detail.flavor_text_entries[0]?.flavor_text,
   };
-  const PokemonEvolutionProps = {
-    color,
-    name,
-    image: data.sprites.other["official-artwork"].front_default,
-  };
 
   return (
     <>
@@ -82,7 +78,7 @@ const DetailPage: NextPage<DetailPageProps> = (props) => {
       />
       <div className={styles.defaultLayout}>
         <PrimaryInformation {...PrimaryInformationProps} />
-        <PokemonEvolution {...PokemonEvolutionProps} />
+        <PokemonEvolution {...{ color, evolution }} />
         <SecondaryInformation {...{ color, detail }} />
       </div>
       <Footer color={color} />
