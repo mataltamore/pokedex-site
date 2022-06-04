@@ -208,6 +208,10 @@
   }
 }
 
+.evolutionCardsWrapper {
+  @include flex($wrap: wrap);
+}
+
 .card--border {
   border: none;
   border-radius: 20px;
