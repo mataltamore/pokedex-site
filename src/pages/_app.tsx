@@ -2,7 +2,7 @@ import React from "react";
 import type { AppProps } from "next/app";
 import "../../styles/index.scss";
 
-import { GlobalFilterProvider } from "../components/helpers/context";
+import { GlobalFilterProvider } from "../globals/context/GlobalFilter/GlobalFilterProvider";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

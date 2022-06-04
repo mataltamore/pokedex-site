@@ -4,7 +4,8 @@ import Image from "next/image";
 
 import { PokemonTypeMapping } from "../../../globals/utils";
 import { StaticPokeAPI, PokemonType } from "../../../globals/types";
-import { useGlobalFilter } from "../../helpers/context";
+
+import { useGlobalFilter } from "../../../globals/context/GlobalFilter/context";
 
 import styles from "./Homepage.module.scss";
 

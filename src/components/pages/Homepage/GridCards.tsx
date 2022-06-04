@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { StaticPokeAPI } from "../../../globals/types";
-import { useGlobalFilter } from "../../helpers/context";
+import { useGlobalFilter } from "../../../globals/context/GlobalFilter/context";
 
 import Card from "./Card";
 

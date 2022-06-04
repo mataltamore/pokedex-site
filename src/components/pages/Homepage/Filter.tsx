@@ -1,8 +1,16 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import { useGlobalFilter, ContextType, ACTION } from "../../helpers/context";
+
 import { GenerationNumber, PokemonTypeName } from "../../../globals/types";
+
+import {
+  useGlobalFilter,
+  ContextType,
+} from "../../../globals/context/GlobalFilter/context";
+import { ACTION } from "../../../globals/context/GlobalFilter/reducer";
+
 import FilterIcon from "../../../../public/images/filter-icon.svg";
+
 import styles from "./Homepage.module.scss";
 
 const GenerationTypesFilter = ({ state, dispatch }: ContextType) => {
